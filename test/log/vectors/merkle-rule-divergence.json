@@ -1,0 +1,12 @@
+{
+  "description": "Same two leaves, two node rules. RFC9162 raw-byte (THIS log) vs utf8-hex-text (the separate batch variant). Roots DIFFER.",
+  "leafInputsUtf8": [
+    "leaf-0",
+    "leaf-1"
+  ],
+  "leftLeafHashHex": "305df59f9590c3c9ac63d2b2743c388e3792449078cebf7fb3dbe6471643b2b7",
+  "rightLeafHashHex": "3145c409f259b7c53e32036090ff76751025a2498ba9823ef718cac50b4e616f",
+  "rfc9162RawByteRootHex": "60a53eed0de87a90c8e59427c59c46253c33a76a09502a51801300927b7e6bdc",
+  "utf8HexTextRootHex": "6cb610a55ea72fdd87e264eef8cf391d3bdb8f6c1af68d1b4698133e32d7146f",
+  "rootsDiffer": true
+}

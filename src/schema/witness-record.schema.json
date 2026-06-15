@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://awp.placeholder.invalid/witness-record/v1/schema.json",
+  "title": "WitnessRecord v0.1 (AWP predicate)",
+  "description": "The OPEN Agent Witness Protocol WitnessRecord predicate. Mirrors AWP spec section 4. The $id namespace is a PLACEHOLDER pending an operator decision. Per-profile minimums (pay/doc/principal/composite) are NOT expressed here as conditional subschemas in v0.1 — they are enforced by the validateProfile() validator; this document carries the structural shape and the honesty boundary (claim-class enum, hmac-for-PII).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "deployment", "intent", "chain"],
+  "properties": {
+    "profile": {
+      "type": "string",
+      "enum": ["pay", "doc", "principal", "composite"],
+      "description": "Selects which optional blocks become required (constraint set, not a separate schema)."
+    },
+    "deployment": { "$ref": "#/$defs/deployment" },
+    "intent": { "$ref": "#/$defs/intent" },
+    "authorization": { "$ref": "#/$defs/authorization" },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "verifications": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/verification" }
+    },
+    "chain": { "$ref": "#/$defs/chain" },
+    "erasure_events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/erasureEvent" }
+    }
+  },
+  "$defs": {
+    "sha256Hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Lowercase 64-char hex SHA-256."
+    },
+    "rfc3339": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp."
+    },
+    "software": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["log_id", "node_key_fpr", "software"],
+      "properties": {
+        "log_id": { "type": "string", "minLength": 1 },
+        "node_key_fpr": { "type": "string", "minLength": 1, "description": "Ed25519 fingerprint — customer key." },
+        "software": { "$ref": "#/$defs/software" }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_id", "agent_key_fpr", "runtime_ref"],
+      "properties": {
+        "agent_id": { "type": "string", "minLength": 1 },
+        "agent_key_fpr": { "type": "string", "minLength": 1 },
+        "runtime_ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_hash", "decision"],
+      "properties": {
+        "policy_id": { "type": "string", "minLength": 1 },
+        "policy_hash": { "$ref": "#/$defs/sha256Hex" },
+        "decision": { "type": "string", "enum": ["allow", "deny", "escalate"] }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent", "action", "target_ref", "params_hash", "started_at", "ended_at", "policy"],
+      "properties": {
+        "agent": { "$ref": "#/$defs/agent" },
+        "action": { "type": "string", "minLength": 1, "description": "verb, e.g. payment.refund | doc.generate" },
+        "target_ref": { "type": "string", "minLength": 1 },
+        "params_hash": { "$ref": "#/$defs/sha256Hex" },
+        "started_at": { "$ref": "#/$defs/rfc3339" },
+        "ended_at": { "$ref": "#/$defs/rfc3339" },
+        "policy": { "$ref": "#/$defs/policy" }
+      }
+    },
+    "challengeBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["challenge", "canonicalization", "evidence_hash", "display_mechanism"],
+      "properties": {
+        "challenge": { "type": "string", "minLength": 1 },
+        "canonicalization": { "type": "string", "minLength": 1 },
+        "evidence_hash": { "$ref": "#/$defs/sha256Hex" },
+        "display_mechanism": { "type": "string", "enum": ["none", "spc", "customer-ui-asserted"] }
+      }
+    },
+    "presentationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nonce", "aud", "sd_hash", "transaction_data_hashes"],
+      "properties": {
+        "nonce": { "type": "string", "minLength": 1 },
+        "aud": { "type": "string", "minLength": 1 },
+        "sd_hash": { "$ref": "#/$defs/sha256Hex" },
+        "transaction_data_hashes": { "type": "array", "items": { "$ref": "#/$defs/sha256Hex" } }
+      }
+    },
+    "statusCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "result", "checked_at"],
+      "properties": {
+        "method": { "type": "string", "enum": ["bitstring", "token-status-list"] },
+        "result": { "type": "string", "minLength": 1 },
+        "checked_at": { "$ref": "#/$defs/rfc3339" }
+      }
+    },
+    "credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "issuer", "assertion_hash", "trust_anchor", "verified", "verifier_policy_version"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["oidc", "saml", "webauthn", "openid4vp", "sd-jwt-vc", "mdoc", "ap2-mandate"]
+        },
+        "issuer": { "type": "string", "minLength": 1 },
+        "assertion_hash": { "$ref": "#/$defs/sha256Hex" },
+        "challenge_binding": { "$ref": "#/$defs/challengeBinding" },
+        "presentation_binding": { "$ref": "#/$defs/presentationBinding" },
+        "status_check": { "$ref": "#/$defs/statusCheck" },
+        "trust_anchor": { "type": "string", "minLength": 1 },
+        "verified": { "type": "boolean" },
+        "assurance_echo": {
+          "type": "string",
+          "description": "ECHOED from issuer, never asserted by AWP."
+        },
+        "verifier_policy_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal_ref", "credential"],
+      "properties": {
+        "principal_ref": { "type": "string", "minLength": 1, "description": "pseudonymous, customer-resolvable only." },
+        "credential": { "$ref": "#/$defs/credential" }
+      }
+    },
+    "artifactDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "value"],
+      "properties": {
+        "alg": { "type": "string", "enum": ["sha256", "hmac-sha256"] },
+        "value": { "$ref": "#/$defs/sha256Hex", "description": "lowercase 64-char hex digest (both sha256 and hmac-sha256 are 64 hex chars)." },
+        "key_ref": { "type": "string", "minLength": 1, "description": "customer-held key id, required when hmac." }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "alg": { "const": "hmac-sha256" } } },
+          "then": { "required": ["key_ref"] }
+        }
+      ]
+    },
+    "originClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim", "asserted_by", "verified"],
+      "properties": {
+        "claim": { "type": "string", "minLength": 1 },
+        "asserted_by": { "type": "string", "minLength": 1 },
+        "verified": { "type": "boolean" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["c2pa_manifest_hash", "c2pa_validation", "origin_claims"],
+      "properties": {
+        "c2pa_manifest_hash": {
+          "oneOf": [{ "$ref": "#/$defs/sha256Hex" }, { "type": "null" }]
+        },
+        "c2pa_validation": { "type": "string", "enum": ["pass", "fail", "absent"] },
+        "origin_claims": { "type": "array", "items": { "$ref": "#/$defs/originClaim" } }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "digest", "media_type", "size"],
+      "properties": {
+        "role": { "type": "string", "enum": ["input", "output"] },
+        "digest": { "$ref": "#/$defs/artifactDigest" },
+        "media_type": { "type": "string", "minLength": 1 },
+        "size": { "type": "integer", "minimum": 0 },
+        "pii_bearing": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, digest.alg MUST be hmac-sha256 (GDPR §7)."
+        },
+        "provenance": { "$ref": "#/$defs/provenance" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "pii_bearing": { "const": true } }, "required": ["pii_bearing"] },
+          "then": { "properties": { "digest": { "properties": { "alg": { "const": "hmac-sha256" } } } } }
+        }
+      ]
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "subject_hash", "issuer", "method", "result", "claim_class"],
+      "properties": {
+        "check": { "type": "string", "minLength": 1 },
+        "subject_hash": { "$ref": "#/$defs/sha256Hex" },
+        "issuer": { "type": "string", "minLength": 1 },
+        "method": { "type": "string", "minLength": 1 },
+        "result": { "type": "string", "enum": ["pass", "fail", "unverifiable"] },
+        "claim_class": {
+          "type": "string",
+          "enum": ["integrity-since-witness", "verified-against", "asserted-by"],
+          "description": "The honesty boundary. No value claims authenticity-at-origin or identity-proofing."
+        }
+      }
+    },
+    "chain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prev_record_hash"],
+      "properties": {
+        "prev_record_hash": { "$ref": "#/$defs/sha256Hex" }
+      }
+    },
+    "erasureEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_ref", "key_ref", "destroyed_at", "requested_by_ref"],
+      "properties": {
+        "artifact_ref": { "type": "string", "minLength": 1 },
+        "key_ref": { "type": "string", "minLength": 1 },
+        "destroyed_at": { "$ref": "#/$defs/rfc3339" },
+        "requested_by_ref": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "description": "RFC 9162 RFC9162_SHA256 raw-byte inclusion proof, 7 leaves, leaf index 3",
+  "leafCount": 7,
+  "leafInputsUtf8": [
+    "leaf-0",
+    "leaf-1",
+    "leaf-2",
+    "leaf-3",
+    "leaf-4",
+    "leaf-5",
+    "leaf-6"
+  ],
+  "leafIndex": 3,
+  "leafHashHex": "f76836325aec5699d8d71f8e42e9d47c5c29b08059ba296384f7ca40ad3a40ae",
+  "rootHex": "0b007fb915eb9b2a146f54b1c86ec53b664f8e455b7660b0b6ee13edc0d921c0",
+  "siblingsHex": [
+    {
+      "hashHex": "fca89f57c9f8c8eb4047a7ff9d333acf9e0f3384b20b255bceab0f216dcca267",
+      "position": "left"
+    },
+    {
+      "hashHex": "60a53eed0de87a90c8e59427c59c46253c33a76a09502a51801300927b7e6bdc",
+      "position": "left"
+    },
+    {
+      "hashHex": "8eae6bd3b3a07f1f75ee72a531629e6eb31e42e62f760e47de52a53c3641ef23",
+      "position": "right"
+    }
+  ]
+}

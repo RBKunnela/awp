@@ -1,0 +1,79 @@
+{
+  "name": "agent-witness-protocol",
+  "version": "0.1.0",
+  "description": "Open schema and verifier for the Agent Witness Protocol (AWP) — tamper-evident, customer-keyed, offline-verifiable witness records. Verify a receipt without trusting, or asking, the producer.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "keywords": [
+    "witness",
+    "audit",
+    "tamper-evident",
+    "in-toto",
+    "dsse",
+    "provenance",
+    "verifiable",
+    "schema"
+  ],
+  "bin": {
+    "awp": "bin/awp.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.js"
+    },
+    "./envelope": {
+      "types": "./dist/envelope/index.d.ts",
+      "import": "./dist/envelope/index.js"
+    },
+    "./verify": {
+      "types": "./dist/verify/index.d.ts",
+      "import": "./dist/verify/index.js"
+    },
+    "./anchor": {
+      "types": "./dist/anchor/index.d.ts",
+      "import": "./dist/anchor/index.js"
+    },
+    "./log": {
+      "types": "./dist/log/index.d.ts",
+      "import": "./dist/log/index.js"
+    },
+    "./witness-record.schema.json": "./src/schema/witness-record.schema.json"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "src/schema/witness-record.schema.json",
+    "samples/receipt.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^8.57.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

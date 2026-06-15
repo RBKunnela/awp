@@ -1,0 +1,44 @@
+{
+  "profile": "doc",
+  "deployment": {
+    "log_id": "log:acme-eu-1",
+    "node_key_fpr": "SHA256:deploymentkeyfingerprint0001",
+    "software": { "name": "paybot", "version": "1.4.0" }
+  },
+  "intent": {
+    "agent": {
+      "agent_id": "agent:doc-bot",
+      "agent_key_fpr": "SHA256:agentkeyfpr0002",
+      "runtime_ref": "runtime:node22-prod"
+    },
+    "action": "doc.generate",
+    "target_ref": "doc:credit-note-tmpl",
+    "params_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "started_at": "2026-06-11T11:00:00Z",
+    "ended_at": "2026-06-11T11:00:01Z",
+    "policy": {
+      "policy_id": "policy:doc-gen-v1",
+      "policy_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "decision": "allow"
+    }
+  },
+  "artifacts": [
+    {
+      "role": "output",
+      "digest": {
+        "alg": "sha256",
+        "value": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "media_type": "application/pdf",
+      "size": 20481,
+      "provenance": {
+        "c2pa_manifest_hash": null,
+        "c2pa_validation": "absent",
+        "origin_claims": []
+      }
+    }
+  ],
+  "chain": {
+    "prev_record_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

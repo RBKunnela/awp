@@ -1,0 +1,12 @@
+{
+  "description": "Consistency proof built over a tree whose leaf 1 was rewritten; checked against the ORIGINAL size-4 root it must FAIL",
+  "first": 4,
+  "second": 7,
+  "rewrittenLeafIndex": 1,
+  "originalSize4RootHex": "bdd1c5ff55b19cb6b0e7c761bf9a6ccaa27fbbfc07b74f1fabb6e911a0bd2ab3",
+  "rewrittenSize7RootHex": "166f77bf3413a7224a222d16ba1639976d0cb7e53ca0274dc083dc79b8d25102",
+  "rewrittenProofPathHex": [
+    "8eae6bd3b3a07f1f75ee72a531629e6eb31e42e62f760e47de52a53c3641ef23"
+  ],
+  "expectedVerifyResultAgainstOriginalRoot": false
+}

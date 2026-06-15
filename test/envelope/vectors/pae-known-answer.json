@@ -1,0 +1,36 @@
+{
+  "_comment": "DSSE v1.0 PAE known-answer vectors (AW-2 AC1). PAE(type, payload) = \"DSSEv1\" SP LEN(type) SP type SP LEN(payload) SP payload, where SP is one ASCII space (0x20) and LEN is the BYTE length as ASCII decimal. These are pinned so any 2036 re-implementation can confirm byte-for-byte. The `pae_string` is the human-readable UTF-8 of the PAE bytes; `pae_hex` is the canonical byte sequence.",
+  "cases": [
+    {
+      "name": "in-toto-json-simple",
+      "note": "The AWP payloadType with a trivial JSON payload. payloadType is 28 bytes, payload is 7 bytes.",
+      "payloadType": "application/vnd.in-toto+json",
+      "payload_utf8": "{\"a\":1}",
+      "expected_type_byte_length": 28,
+      "expected_payload_byte_length": 7,
+      "pae_string": "DSSEv1 28 application/vnd.in-toto+json 7 {\"a\":1}",
+      "pae_hex": "445353457631203238206170706c69636174696f6e2f766e642e696e2d746f746f2b6a736f6e2037207b2261223a317d",
+      "pae_base64": "RFNTRXYxIDI4IGFwcGxpY2F0aW9uL3ZuZC5pbi10b3RvK2pzb24gNyB7ImEiOjF9"
+    },
+    {
+      "name": "empty-payload",
+      "note": "Edge: an empty payload. LEN(payload) = 0.",
+      "payloadType": "application/vnd.in-toto+json",
+      "payload_utf8": "",
+      "expected_type_byte_length": 28,
+      "expected_payload_byte_length": 0,
+      "pae_string": "DSSEv1 28 application/vnd.in-toto+json 0 ",
+      "pae_hex": "445353457631203238206170706c69636174696f6e2f766e642e696e2d746f746f2b6a736f6e203020"
+    },
+    {
+      "name": "multibyte-payload",
+      "note": "Edge: payload contains a 2-byte UTF-8 character (U+00E9, 'é'). LEN counts BYTES (2), not characters (1) — this case fails any char-length implementation.",
+      "payloadType": "text/plain",
+      "payload_utf8": "é",
+      "expected_type_byte_length": 10,
+      "expected_payload_byte_length": 2,
+      "pae_string": "DSSEv1 10 text/plain 2 é",
+      "pae_hex": "44535345763120313020746578742f706c61696e203220c3a9"
+    }
+  ]
+}

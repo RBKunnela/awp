@@ -1,0 +1,10 @@
+{
+  "description": "C2SP tlog-checkpoint over (origin, size=7, root) wrapped in a signed-note (test key)",
+  "origin": "awp.example/log",
+  "size": 7,
+  "rootHex": "0b007fb915eb9b2a146f54b1c86ec53b664f8e455b7660b0b6ee13edc0d921c0",
+  "publicKeyHex": "ea4a6c63e29c520abef5507b132ec5f9954776aebebe7b92421eea691446d22c",
+  "keyIdHex": "511c2839",
+  "checkpointBody": "awp.example/log\n7\nCwB/uRXrmyoUb1SxyG7FO2ZPjkVbdmCwtu4T7cDZIcA=\n",
+  "signedNote": "awp.example/log\n7\nCwB/uRXrmyoUb1SxyG7FO2ZPjkVbdmCwtu4T7cDZIcA=\n\n— awp.example/log URwoOdH3ouXoKYm8fTfCX04WiruCJoTbMY30YcpWanglkr8Qj7q+ZX4qU2k4jR7F9NFZPyzX90oYz6x6O6kZkE38DwY=\n"
+}

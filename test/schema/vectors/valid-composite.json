@@ -1,0 +1,74 @@
+{
+  "profile": "composite",
+  "deployment": {
+    "log_id": "log:acme-eu-1",
+    "node_key_fpr": "SHA256:deploymentkeyfingerprint0001",
+    "software": { "name": "paybot", "version": "1.4.0" }
+  },
+  "intent": {
+    "agent": {
+      "agent_id": "agent:ecommerce-bot",
+      "agent_key_fpr": "SHA256:agentkeyfpr0004",
+      "runtime_ref": "runtime:node22-prod"
+    },
+    "action": "payment.refund",
+    "target_ref": "order:refund-555",
+    "params_hash": "aaaabbbbccccddddeeeeffff000011112222333344445555666677778888999a",
+    "started_at": "2026-06-11T13:00:00Z",
+    "ended_at": "2026-06-11T13:00:04Z",
+    "policy": {
+      "policy_id": "policy:refund-with-credit-note-v1",
+      "policy_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "decision": "allow"
+    }
+  },
+  "authorization": {
+    "principal_ref": "principal:opaque-approver-22",
+    "credential": {
+      "type": "ap2-mandate",
+      "issuer": "did:web:issuer.example",
+      "assertion_hash": "abababababababababababababababababababababababababababababababab",
+      "challenge_binding": {
+        "challenge": "Y2Fub25pY2FsX2ludGVudA-server-nonce-001",
+        "canonicalization": "awp-canon-v1",
+        "evidence_hash": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "display_mechanism": "spc"
+      },
+      "trust_anchor": "jwks:https://issuer.example/.well-known/jwks.json@2026-06-11T13:00:00Z",
+      "verified": true,
+      "assurance_echo": "eIDAS-high",
+      "verifier_policy_version": "vp:2026.6"
+    }
+  },
+  "artifacts": [
+    {
+      "role": "output",
+      "digest": {
+        "alg": "sha256",
+        "value": "efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef"
+      },
+      "media_type": "application/pdf",
+      "size": 18324,
+      "provenance": {
+        "c2pa_manifest_hash": null,
+        "c2pa_validation": "absent",
+        "origin_claims": [
+          { "claim": "issued-by-acme", "asserted_by": "acme", "verified": false }
+        ]
+      }
+    }
+  ],
+  "verifications": [
+    {
+      "check": "ap2.payment_mandate.sd_jwt_signature",
+      "subject_hash": "1212121212121212121212121212121212121212121212121212121212121212",
+      "issuer": "did:web:issuer.example",
+      "method": "jwks-fetch",
+      "result": "pass",
+      "claim_class": "verified-against"
+    }
+  ],
+  "chain": {
+    "prev_record_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}
