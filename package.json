@@ -1,6 +1,6 @@
 {
   "name": "agent-witness-protocol",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open schema and verifier for the Agent Witness Protocol (AWP) — tamper-evident, customer-keyed, offline-verifiable witness records. Verify a receipt without trusting, or asking, the producer.",
   "type": "module",
   "license": "Apache-2.0",
@@ -65,9 +65,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
+    "@types/node": "^22.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/parser": "^8.61.1",
     "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^8.57.1",
     "typescript": "^5.7.2",
