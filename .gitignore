@@ -7,3 +7,4 @@ tools/*-key.json
 tools/receipt-*.json
 graphify-out/
 .aios/
+.claude/
