@@ -16,6 +16,15 @@
 
 ---
 
+## Visual overview
+
+![AWP — the honesty boundary and the four-layer verification chain](docs/assets/awp-verification-chain.png)
+
+> The **honesty boundary** (left) and the **four-layer verification chain** (right).
+> 🎬 A short video walkthrough is coming soon on YouTube.
+
+---
+
 ## What this is
 
 A **`WitnessRecord`** is one structured, signed record of a *governed agent event*:
@@ -25,14 +34,7 @@ A **`WitnessRecord`** is one structured, signed record of a *governed agent even
 - **artifacts** — what it read or produced, by **hash, never content**;
 - **verifications** — the witness's own **typed testimony** about each external thing it checked.
 
-```mermaid
-flowchart TB
-  WR["<b>WitnessRecord</b><br/>one governed agent event, signed"]
-  WR --> I["<b>intent</b><br/>what the agent set out to do"]
-  WR --> A["<b>authorization</b><br/>credential that permitted it<br/>+ what was verified about it"]
-  WR --> AR["<b>artifacts</b><br/>read / produced — by hash, never content"]
-  WR --> V["<b>verifications</b><br/>typed testimony, one per external check"]
-```
+![Anatomy of a WitnessRecord — intent, authorization, artifacts, and typed verifications](docs/assets/witness-record-anatomy.png)
 
 This package is the **schema and the verifier** — the contract every producer emits and every
 verifier reads. It is deliberately permissive (Apache-2.0) so **anyone** can read the schema,
@@ -107,15 +109,14 @@ verification**, and every report prints the boundary line verbatim.
 A **full receipt** is one self-contained file that chains four links. `awp verify` walks the chain
 **offline** and reports `PASS`, or `FAIL` naming the exact layer that broke:
 
-```mermaid
-flowchart LR
-  A["<b>Signed DSSE envelope</b><br/><i>“the witnessed record”</i>"]
-  B["<b>RFC 9162 inclusion proof</b><br/><i>“its leaf is in the tree”</i>"]
-  C["<b>Signed C2SP checkpoint</b><br/><i>“whose root the log signed”</i>"]
-  D["<b>External time anchor</b><br/><i>“that root existed at T”</i>"]
-  V{{"<b>awp verify</b> — offline, zero trust<br/>PASS ✅ / FAIL ❌ (names the layer)"}}
-  A --> B --> C --> D --> V
+```text
+signed DSSE envelope  →  RFC 9162 inclusion proof  →  signed C2SP checkpoint  →  external time anchor
+"the witnessed record"    "its leaf is in the tree"    "whose root the log signed"   "that root existed at T"
+                                          ↓
+                         awp verify (offline, zero trust) → PASS / FAIL (names the failing layer)
 ```
+
+_(The four layers are rendered visually in the [Visual overview](#visual-overview) above.)_
 
 `awp verify` runs, and prints by name, every applicable check: `signature`, `statement`, `schema`,
 `profile`, `claim-class`, `chain-link`, `checkpoint`, `inclusion`, and `anchor`. Time anchors are
@@ -125,14 +126,7 @@ weight for RFC 3161 *only* when the pinned trust anchor is declared qualified, n
 
 ### Why a *neutral* witness
 
-```mermaid
-flowchart LR
-  AG["<b>Agent</b><br/>performs a governed action"]
-  W["<b>Independent witness</b><br/>records intent + authorization + artifacts,<br/>signs the WitnessRecord"]
-  VV["<b>Anyone, later</b><br/>awp verify — no relationship,<br/>no network, no trust in the producer"]
-  AG -->|observed| W -->|receipt| VV
-  AG -.->|"self-witnessing =<br/>documentation, not evidence"| AG
-```
+![Why a neutral witness — agent → independent witness → anyone verifies offline; self-witnessing is not evidence](docs/assets/neutral-witness.png)
 
 ---
 
@@ -212,6 +206,14 @@ A record carries a `profile` that selects which blocks are required:
 | `doc` | at least one `artifact`; authorization optional (unattended generation is witnessable — it just proves less) |
 | `principal` | an `authorization` whose credential is bound to *this* intent (`challenge_binding` or `presentation_binding`) |
 | `composite` | intent + at least one artifact + mandate-class authorization + at least one verification (union of `pay` and `doc`) |
+
+---
+
+## Media & further reading
+
+- 📄 **[Cryptographic Architecture Statement (PDF)](docs/awp-cryptographic-architecture-statement.pdf)** — plain-language report on what AWP proves and how the pieces fit.
+- 🎬 **Video walkthrough** — the engineering-logic explainer, coming soon on YouTube (embed to follow).
+- 📘 **[Full specification](docs/spec/AWP-v0.1.md)** · **[Receipt structure](docs/receipts.md)** · **[Time anchoring](docs/anchoring.md)** · **[The case for AWP](docs/THE-CASE-FOR-AWP.md)**
 
 ---
 

@@ -8,3 +8,6 @@ tools/receipt-*.json
 graphify-out/
 .aios/
 .claude/
+
+# NotebookLM video — hosted on YouTube, not in git (too heavy)
+docs/*.mp4
