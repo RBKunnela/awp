@@ -54,6 +54,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
     "type-check": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
