@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Wire protocol namespace (interim production host, no `.dev`): `https://awp.paybotfin.com/witness-record/v1` (predicateType + schema `$id`).
+- Wire protocol namespace (interim production host, no `.dev`, live on apex): `https://paybotfin.com/witness-record/v1` (predicateType + schema `$id`).
 - GitHub Actions CI on `main` (lint → typecheck → build → test) with Node 20.
 - `SECURITY.md` — supported versions, disclosure path, honesty boundary for verification claims.
 - `NOTICE` — copyright and dual-license attribution (code Apache-2.0; spec CC-BY-4.0).

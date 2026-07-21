@@ -52,17 +52,18 @@ export const PAYLOAD_TYPE = 'application/vnd.in-toto+json' as const;
 /**
  * AWP predicate namespace (interim production host — not `.dev`).
  *
- * Enterprise note: many corp networks block or distrust `.dev` TLDs. The open
- * wire host is therefore a production-TLD subdomain under the operator-owned
- * `paybotfin.com` zone: `https://awp.paybotfin.com/witness-record/v1`.
+ * Live document (Cloudflare Worker route on the apex you already own):
+ *   `https://paybotfin.com/witness-record/v1`
+ * Schema:
+ *   `https://paybotfin.com/witness-record/v1/schema.json`
  *
- * (Not `paybotfin.awp.com` — that would require owning apex `awp.com`, which
- * is not in the FriendlyAI Cloudflare account.)
+ * Why not `awp.paybotfin.com` yet: that subdomain needs a DNS record; the
+ * limited API token cannot write DNS. Apex path works with zero new DNS.
+ * Why not `.dev`: many enterprise networks block or distrust `.dev` TLDs.
  *
- * Schema `$id` is the same URI with `/schema.json` suffix. Revisit if a
- * neutral dedicated apex (e.g. agent-witness.org) is registered later.
+ * Schema `$id` is the same URI with `/schema.json` suffix.
  */
-export const PREDICATE_TYPE = 'https://awp.paybotfin.com/witness-record/v1' as const;
+export const PREDICATE_TYPE = 'https://paybotfin.com/witness-record/v1' as const;
 
 /** Lowercase 64-char hex SHA-256, the only digest representation AWP accepts. */
 const SHA256_HEX = /^[a-f0-9]{64}$/;
