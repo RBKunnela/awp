@@ -12,10 +12,9 @@ verify one without trusting, or even *asking*, whoever produced it.**
 [![YouTube](https://img.shields.io/badge/YouTube-@FriendlyAI__fi-FF0000.svg?logo=youtube&logoColor=white)](https://www.youtube.com/@FriendlyAI_fi)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00.svg?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/aiagentsprp)
 
-> **Status:** **v0.2.0** · Apache-2.0 · public repo  
-> **Wire namespace (live):** [`https://awp.paybotfin.com/witness-record/v1`](https://awp.paybotfin.com/witness-record/v1) · schema: [`…/schema.json`](https://awp.paybotfin.com/witness-record/v1/schema.json)  
-> Production `.com` host — **no `.dev`** (enterprise-friendly). Ships schema, DSSE + in-toto, RFC 9162 log, time anchors, offline `awp verify`.  
-> npm: not published yet — install from this repo until first `npm publish`.
+> **Status:** **v0.2.0 on npm** · Apache-2.0 · public repo  
+> **Install:** `npm install agent-witness-protocol` · CLI: `npx awp verify samples/receipt.json`  
+> **Wire namespace (live):** [`https://awp.paybotfin.com/witness-record/v1`](https://awp.paybotfin.com/witness-record/v1) · schema: [`…/schema.json`](https://awp.paybotfin.com/witness-record/v1/schema.json)
 
 ---
 
@@ -114,15 +113,20 @@ This package is the **open contract + reference verifier** (Apache-2.0): schema,
 ## Prove it in 60 seconds
 
 ```sh
+# From npm (recommended)
+npm install agent-witness-protocol
+
+# Clean full receipt shipped in the package → every layer PASS
+npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
+
+# From a clone (development)
 git clone https://github.com/RBKunnela/awp.git
 cd awp
 npm install
 npm run build
-
-# Clean full receipt → every layer PASS
 node bin/awp.js verify samples/receipt.json
 
-# ONE flipped hex char → FAIL, names the layer
+# ONE flipped hex char → FAIL, names the layer (clone only)
 node bin/awp.js verify test/verify/fixtures/full-receipt-tampered.json
 ```
 
@@ -150,8 +154,6 @@ import { validateWitnessRecord, validateProfile } from 'agent-witness-protocol';
 const result = validateWitnessRecord(input);
 if (result.ok) console.log(validateProfile(result.record));
 ```
-
-> After npm publish: `npm install agent-witness-protocol`. Today: install from this repo.
 
 ---
 
