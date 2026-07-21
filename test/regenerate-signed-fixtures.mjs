@@ -1,6 +1,6 @@
 /**
  * AWP-PUBLISH-1 Task 3 — regenerate every signed fixture after the permanent
- * namespace lands (`https://paybotfin.com/witness-record/v1`).
+ * namespace lands (`https://awp.paybotfin.com/witness-record/v1`).
  *
  * Run from package root:
  *
@@ -37,5 +37,5 @@ run('test/envelope/vectors/generate-vectors.mjs');
 run('test/verify/fixtures/generate-fixtures.mjs');
 run('test/verify/fixtures/generate-full-receipt.mjs');
 
-console.log('\nAll signed fixtures regenerated under paybotfin.com namespace.');
+console.log('\nAll signed fixtures regenerated under awp.paybotfin.com namespace.');
 console.log('Next: npm test  (expect 368 pass) && rg "placeholder\\.invalid" src test samples');

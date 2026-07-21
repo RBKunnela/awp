@@ -12,7 +12,7 @@
  * {
  *   "_type": "https://in-toto.io/Statement/v1",
  *   "subject": [{ "name": "<target_ref>", "digest": { "sha256": "<params_hash>" } }],
- *   "predicateType": "https://paybotfin.com/witness-record/v1",
+ *   "predicateType": "https://awp.paybotfin.com/witness-record/v1",
  *   "predicate": { ...WitnessRecord }
  * }
  * ```

@@ -52,18 +52,19 @@ export const PAYLOAD_TYPE = 'application/vnd.in-toto+json' as const;
 /**
  * AWP predicate namespace (interim production host — not `.dev`).
  *
- * Live document (Cloudflare Worker route on the apex you already own):
- *   `https://paybotfin.com/witness-record/v1`
+ * Live document (Cloudflare Worker + DNS on operator-owned zone):
+ *   `https://awp.paybotfin.com/witness-record/v1`
  * Schema:
- *   `https://paybotfin.com/witness-record/v1/schema.json`
+ *   `https://awp.paybotfin.com/witness-record/v1/schema.json`
  *
- * Why not `awp.paybotfin.com` yet: that subdomain needs a DNS record; the
- * limited API token cannot write DNS. Apex path works with zero new DNS.
+ * Apex alias also served: `https://paybotfin.com/witness-record/v1`
  * Why not `.dev`: many enterprise networks block or distrust `.dev` TLDs.
+ * DNS for `awp.paybotfin.com` was created via Maia (Hetzner) + vault
+ * Cloudflare-all (2026-07-21).
  *
  * Schema `$id` is the same URI with `/schema.json` suffix.
  */
-export const PREDICATE_TYPE = 'https://paybotfin.com/witness-record/v1' as const;
+export const PREDICATE_TYPE = 'https://awp.paybotfin.com/witness-record/v1' as const;
 
 /** Lowercase 64-char hex SHA-256, the only digest representation AWP accepts. */
 const SHA256_HEX = /^[a-f0-9]{64}$/;

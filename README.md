@@ -13,7 +13,7 @@ verify one without trusting, or even *asking*, whoever produced it.**
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00.svg?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/aiagentsprp)
 
 > **Status:** **v0.2.0** · Apache-2.0 · public repo  
-> **Wire namespace (live):** [`https://paybotfin.com/witness-record/v1`](https://paybotfin.com/witness-record/v1) · schema: [`…/schema.json`](https://paybotfin.com/witness-record/v1/schema.json)  
+> **Wire namespace (live):** [`https://awp.paybotfin.com/witness-record/v1`](https://awp.paybotfin.com/witness-record/v1) · schema: [`…/schema.json`](https://awp.paybotfin.com/witness-record/v1/schema.json)  
 > Production `.com` host — **no `.dev`** (enterprise-friendly). Ships schema, DSSE + in-toto, RFC 9162 log, time anchors, offline `awp verify`.  
 > npm: not published yet — install from this repo until first `npm publish`.
 
@@ -280,7 +280,7 @@ Giving the verifier away is how "AWP-verifiable receipt" becomes a recognized ar
 - [x] Offline `awp verify` (368/368 tests)  
 - [x] Public GitHub (Apache-2.0)  
 - [x] Multilingual YouTube explainers ([@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi))  
-- [x] Wire namespace `paybotfin.com/witness-record/v1` (no `.dev`, live) + CI + SECURITY/NOTICE + CHANGELOG  
+- [x] Wire namespace `awp.paybotfin.com/witness-record/v1` (no `.dev`, live DNS + Worker) + CI + SECURITY/NOTICE + CHANGELOG  
 - [ ] First `npm publish` (`agent-witness-protocol`) — operator GO  
 - [ ] Principal-binding adversarial hardening  
 - [ ] Optional SCITT export adapter (only if a customer requires it)  
@@ -316,7 +316,7 @@ https://buymeacoffee.com/aiagentsprp
 - **Specification:** CC-BY-4.0 (author: Renata Baldissara-Kunnela)  
 - **Copyright:** FriendlyAI Oy — see [NOTICE](./NOTICE)
 
-The `paybotfin.com` namespace (when present on the wire) is a **format identifier**, not an endorsement of any particular producer or receipt.
+The `awp.paybotfin.com` namespace (when present on the wire) is a **format identifier**, not an endorsement of any particular producer or receipt.
 
 ---
 
