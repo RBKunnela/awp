@@ -9,6 +9,10 @@
 
 Only the latest **0.2.x** release line receives security fixes.
 
+## Test keys (not secrets)
+
+Fixture files under `test/**` and `samples/` embed **deterministic Ed25519 TEST keys** so auditors can re-derive signatures offline. They are intentional, public, and **must never** be used in production. Gitleaks allowlists those paths via `.gitleaks.toml`.
+
 ## Reporting a vulnerability
 
 Please **do not** open a public GitHub issue for security problems that could enable verify-bypass, signature forgery acceptance, or supply-chain compromise of this package.

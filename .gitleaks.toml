@@ -1,0 +1,14 @@
+# Gitleaks config for AWP
+# Test fixtures intentionally embed deterministic Ed25519 TEST keys so auditors
+# can re-derive signatures offline. They are not production secrets.
+title = "awp"
+
+[allowlist]
+description = "Committed deterministic test vectors only"
+paths = [
+  '''test/envelope/vectors/.*''',
+  '''test/verify/fixtures/.*''',
+  '''test/log/vectors/.*''',
+  '''test/schema/vectors/.*''',
+  '''samples/.*''',
+]
