@@ -283,7 +283,7 @@ Giving the verifier away is how "AWP-verifiable receipt" becomes a recognized ar
 - [x] Public GitHub (Apache-2.0)  
 - [x] Multilingual YouTube explainers ([@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi))  
 - [x] Wire namespace `awp.paybotfin.com/witness-record/v1` (no `.dev`, live DNS + Worker) + CI + SECURITY/NOTICE + CHANGELOG  
-- [ ] First `npm publish` (`agent-witness-protocol`) — operator GO  
+- [x] First `npm publish` (`agent-witness-protocol@0.2.0` on npm, 2026-07-21)  
 - [ ] Principal-binding adversarial hardening  
 - [ ] Optional SCITT export adapter (only if a customer requires it)  
 
