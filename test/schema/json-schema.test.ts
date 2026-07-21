@@ -69,12 +69,14 @@ describe('[UNIT] witness-record.schema.json — well-formed and consistent', () 
     );
   });
 
-  it('uses the permanent awp.dev namespace (edge)', () => {
+  it('uses the interim production namespace awp.paybotfin.com (edge)', () => {
     const schema = loadSchema();
-    expect(schema.$id).toBe('https://awp.dev/witness-record/v1/schema.json');
+    expect(schema.$id).toBe('https://awp.paybotfin.com/witness-record/v1/schema.json');
     expect(schema.$id).not.toContain('placeholder');
-    expect(PREDICATE_TYPE).toBe('https://awp.dev/witness-record/v1');
-    expect(PREDICATE_TYPE).toContain('awp.dev');
+    expect(schema.$id).not.toContain('.dev');
+    expect(PREDICATE_TYPE).toBe('https://awp.paybotfin.com/witness-record/v1');
+    expect(PREDICATE_TYPE).toContain('awp.paybotfin.com');
     expect(PREDICATE_TYPE).not.toContain('placeholder');
+    expect(PREDICATE_TYPE).not.toContain('.dev');
   });
 });

@@ -55,7 +55,7 @@ AWP must not overclaim. Contributions that present verification as:
 
 will be rejected. PASS means **integrity-since-witness** via best-effort cryptographic re-performance — see `SECURITY.md`.
 
-The `https://awp.dev` namespace is a **format id**, not endorsement of emitters.
+The `https://awp.paybotfin.com` namespace is a **format id**, not endorsement of emitters.
 
 ## Scope tips
 

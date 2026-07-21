@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://awp.dev/witness-record/v1/schema.json",
+  "$id": "https://awp.paybotfin.com/witness-record/v1/schema.json",
   "title": "WitnessRecord v0.1 (AWP predicate)",
-  "description": "The OPEN Agent Witness Protocol WitnessRecord predicate. Mirrors AWP spec section 4. Permanent namespace decided 2026-06-29: https://awp.dev/witness-record/v1 (schema $id appends /schema.json). Per-profile minimums (pay/doc/principal/composite) are NOT expressed here as conditional subschemas in v0.1 — they are enforced by the validateProfile() validator; this document carries the structural shape and the honesty boundary (claim-class enum, hmac-for-PII).",
+  "description": "The OPEN Agent Witness Protocol WitnessRecord predicate. Mirrors AWP spec section 4. Interim production namespace (avoids .dev for enterprise reach): https://awp.paybotfin.com/witness-record/v1 (schema $id appends /schema.json). Per-profile minimums (pay/doc/principal/composite) are NOT expressed here as conditional subschemas in v0.1 — they are enforced by the validateProfile() validator; this document carries the structural shape and the honesty boundary (claim-class enum, hmac-for-PII).",
   "type": "object",
   "additionalProperties": false,
   "required": ["profile", "deployment", "intent", "chain"],

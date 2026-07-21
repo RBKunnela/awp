@@ -10,10 +10,11 @@
 
 ## ✅ NAMESPACE DECIDED (operator, 2026-06-29)
 
-**Permanent namespace = `https://awp.dev`** → `predicateType` + schema `$id` = `https://awp.dev/witness-record/v1`. **Irreversible once published.**
-Chosen (neutral domain) per roundtable 5/8 + all 5 advisory lenses: keeps naming firewall, matches in-toto/SLSA/Sigstore, preserves the donate-to-foundation option. Brand stays on the hosted witness service, not the protocol.
-
-**🔒 NEW OPERATOR DEPENDENCY (blocks Task 1):** register the `awp.dev` domain (~$15/yr). The namespace string does not need to resolve to be valid, but owning it prevents anyone else from claiming the identity and enables the future foundation/spec-site path.
+**Interim production namespace (operator 2026-07-21):** `https://awp.paybotfin.com/witness-record/v1`  
+- **Rationale:** avoid `.dev` (enterprise filters); use operator-owned Cloudflare zone `paybotfin.com`.  
+- **Not** `paybotfin.awp.com` — that requires apex `awp.com` (not owned).  
+- **Not** `awp.dev` — third-party registration / GoDaddy NS.  
+- Neutral dedicated apex (e.g. `agent-witness.org`) remains a future upgrade path; wire change then is a breaking `/v2` or coordinated migration.
 
 ## ✅ ENVELOPE DECIDED (two roundtables, 8 agents, unanimous, 2026-06-29)
 

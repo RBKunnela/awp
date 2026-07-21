@@ -12,7 +12,8 @@ verify one without trusting, or even *asking*, whoever produced it.**
 [![YouTube](https://img.shields.io/badge/YouTube-@FriendlyAI__fi-FF0000.svg?logo=youtube&logoColor=white)](https://www.youtube.com/@FriendlyAI_fi)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00.svg?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/aiagentsprp)
 
-> **Status:** **v0.2.0** · Apache-2.0 · public repo · permanent wire namespace `https://awp.dev/witness-record/v1`  
+> **Status:** **v0.2.0** · Apache-2.0 · public repo  
+> **Wire namespace:** `https://awp.paybotfin.com/witness-record/v1` (production `.com` host — **no `.dev`**, so enterprise filters that block `.dev` still work)  
 > Ships: `WitnessRecord` schema, DSSE + in-toto envelope, RFC 9162 log, time anchors, offline `awp verify` CLI + library.  
 > npm: not published yet — install from this repo until first `npm publish`.
 
@@ -279,7 +280,7 @@ Giving the verifier away is how "AWP-verifiable receipt" becomes a recognized ar
 - [x] Offline `awp verify` (368/368 tests)  
 - [x] Public GitHub (Apache-2.0)  
 - [x] Multilingual YouTube explainers ([@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi))  
-- [x] Permanent namespace `awp.dev` + CI + SECURITY/NOTICE + CHANGELOG  
+- [x] Wire namespace `awp.paybotfin.com` (no `.dev`) + CI + SECURITY/NOTICE + CHANGELOG  
 - [ ] First `npm publish` (`agent-witness-protocol`) — operator GO  
 - [ ] Principal-binding adversarial hardening  
 - [ ] Optional SCITT export adapter (only if a customer requires it)  
@@ -315,7 +316,7 @@ https://buymeacoffee.com/aiagentsprp
 - **Specification:** CC-BY-4.0 (author: Renata Baldissara-Kunnela)  
 - **Copyright:** FriendlyAI Oy — see [NOTICE](./NOTICE)
 
-The `awp.dev` namespace (when present on the wire) is a **format identifier**, not an endorsement of any particular producer or receipt.
+The `awp.paybotfin.com` namespace (when present on the wire) is a **format identifier**, not an endorsement of any particular producer or receipt.
 
 ---
 

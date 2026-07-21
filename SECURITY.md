@@ -46,9 +46,9 @@ It does **not** prove:
 | **Identity / KYC / legal personhood** | **Not proven.** Key material and claim fields are not a substitute for identity systems. |
 | **Producer honesty** | **Not proven.** A neutral witness topology reduces self-attestation risk; it does not make the producer trustworthy. |
 
-Verification is **best-effort cryptographic re-performance**: the verifier re-runs the math and schema checks it knows how to run. Bugs, incomplete check coverage, clock/anchor assumptions, and future wire-format versions can all affect outcomes. Treat PASS as “this artifact still matches its cryptographic commitments,” not as “this event is authentic, complete, or endorsed by FriendlyAI Oy or the `awp.dev` namespace.”
+Verification is **best-effort cryptographic re-performance**: the verifier re-runs the math and schema checks it knows how to run. Bugs, incomplete check coverage, clock/anchor assumptions, and future wire-format versions can all affect outcomes. Treat PASS as “this artifact still matches its cryptographic commitments,” not as “this event is authentic, complete, or endorsed by FriendlyAI Oy or the `awp.paybotfin.com` namespace.”
 
-The namespace `https://awp.dev/...` is a **format identifier**, not an endorsement of any particular emitter or receipt.
+The namespace `https://awp.paybotfin.com/...` is a **format identifier**, not an endorsement of any particular emitter or receipt. Production `.com` host is intentional — many enterprises block or distrust `.dev` TLDs.
 
 ## Supply-chain notes for consumers
 

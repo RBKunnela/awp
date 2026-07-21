@@ -2,8 +2,9 @@
 
 **Date:** 2026-07-21  
 **Account:** Cloudflare FriendlyAI  
-**Wire namespace in code today:** `https://awp.dev/witness-record/v1`  
-**Important:** `awp.dev` is **not** in this Cloudflare account (resolves to GoDaddy NS / third-party host). Owning the namespace domain is recommended before marketing the protocol as permanent.
+**Wire namespace in code today:** `https://awp.paybotfin.com/witness-record/v1`  
+**Why not `.dev`:** many enterprise networks block or distrust `.dev` TLDs.  
+**Why not `paybotfin.awp.com`:** that requires owning apex **`awp.com`** (registered by a third party; not in FriendlyAI Cloudflare). Correct ownership order is **`awp.` + your apex** → `awp.paybotfin.com`.
 
 The predicate string does **not** need to resolve for verification to work. Ownership prevents identity capture and enables a future foundation / spec site.
 

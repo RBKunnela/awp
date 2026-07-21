@@ -50,11 +50,19 @@ export const STATEMENT_TYPE = 'https://in-toto.io/Statement/v1' as const;
 export const PAYLOAD_TYPE = 'application/vnd.in-toto+json' as const;
 
 /**
- * Permanent AWP predicate namespace (operator decision 2026-06-29).
- * Wire identity: `https://awp.dev/witness-record/v1`. Irreversible once published
- * (AWP-PUBLISH-1). Schema `$id` is the same URI with `/schema.json` suffix.
+ * AWP predicate namespace (interim production host — not `.dev`).
+ *
+ * Enterprise note: many corp networks block or distrust `.dev` TLDs. The open
+ * wire host is therefore a production-TLD subdomain under the operator-owned
+ * `paybotfin.com` zone: `https://awp.paybotfin.com/witness-record/v1`.
+ *
+ * (Not `paybotfin.awp.com` — that would require owning apex `awp.com`, which
+ * is not in the FriendlyAI Cloudflare account.)
+ *
+ * Schema `$id` is the same URI with `/schema.json` suffix. Revisit if a
+ * neutral dedicated apex (e.g. agent-witness.org) is registered later.
  */
-export const PREDICATE_TYPE = 'https://awp.dev/witness-record/v1' as const;
+export const PREDICATE_TYPE = 'https://awp.paybotfin.com/witness-record/v1' as const;
 
 /** Lowercase 64-char hex SHA-256, the only digest representation AWP accepts. */
 const SHA256_HEX = /^[a-f0-9]{64}$/;
