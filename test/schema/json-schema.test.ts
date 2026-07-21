@@ -4,7 +4,7 @@
  * JSON-Schema validation engine (kept dependency-free for AW-1); they assert
  * that the schema document is well-formed and structurally agrees with the Zod
  * types on the load-bearing invariants: required top-level blocks, the
- * claim-class enum, the digest-alg enum, and the namespace placeholder.
+ * claim-class enum, the digest-alg enum, and the permanent awp.dev namespace.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -69,9 +69,12 @@ describe('[UNIT] witness-record.schema.json — well-formed and consistent', () 
     );
   });
 
-  it('uses the placeholder namespace, not a committed domain (edge)', () => {
+  it('uses the permanent awp.dev namespace (edge)', () => {
     const schema = loadSchema();
-    expect(schema.$id).toContain('placeholder');
-    expect(PREDICATE_TYPE).toContain('placeholder');
+    expect(schema.$id).toBe('https://awp.dev/witness-record/v1/schema.json');
+    expect(schema.$id).not.toContain('placeholder');
+    expect(PREDICATE_TYPE).toBe('https://awp.dev/witness-record/v1');
+    expect(PREDICATE_TYPE).toContain('awp.dev');
+    expect(PREDICATE_TYPE).not.toContain('placeholder');
   });
 });

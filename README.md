@@ -1,164 +1,138 @@
 # Agent Witness Protocol (AWP)
 
-**Tamper-evident, offline-verifiable receipts for what AI agents do — verify one without trusting, or even asking, whoever produced it.**
+### Your agents already act. Most of them leave **no independent evidence**.
+
+**Tamper-evident, offline-verifiable receipts for what AI agents do —  
+verify one without trusting, or even *asking*, whoever produced it.**
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Tests](https://img.shields.io/badge/tests-368%20passing-brightgreen.svg)](#quick-start)
-[![Crypto](https://img.shields.io/badge/crypto-no%20new%20primitives-informational.svg)](#why-awp-exists-the-honest-8020)
+[![Tests](https://img.shields.io/badge/tests-368%2F368%20passing-brightgreen.svg)](#prove-it-in-60-seconds)
+[![Crypto](https://img.shields.io/badge/crypto-no%20new%20primitives-informational.svg)](#the-honest-8020)
+[![Offline](https://img.shields.io/badge/verify-offline%20%7C%20zero%20trust-success.svg)](#how-a-receipt-actually-works)
+[![YouTube](https://img.shields.io/badge/YouTube-@FriendlyAI__fi-FF0000.svg?logo=youtube&logoColor=white)](https://www.youtube.com/@FriendlyAI_fi)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-ffdd00.svg?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/aiagentsprp)
 
-> **Status:** v0.1 (early) — **source is public (Apache-2.0)**; not yet on npm. This package ships the **open** parts of AWP:
-> the `WitnessRecord` schema and validators, the **DSSE + in-toto** signed envelope, the
-> **RFC 9162** transparency-log layer (Merkle inclusion proofs + C2SP checkpoints) with a
-> reference append-only log store, external **time anchors** (OpenTimestamps + an RFC 3161
-> qualified-TSA slot), the producer operations that assemble a self-contained **receipt
-> bundle**, and the offline **`awp verify`** CLI + library that checks that bundle end-to-end.
+> **Status:** **v0.2.0** · Apache-2.0 · public repo · permanent wire namespace `https://awp.dev/witness-record/v1`  
+> Ships: `WitnessRecord` schema, DSSE + in-toto envelope, RFC 9162 log, time anchors, offline `awp verify` CLI + library.  
+> npm: not published yet — install from this repo until first `npm publish`.
+
+---
+
+## Watch first (7 languages)
+
+Full explainers on **[@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi)** — pick your language:
+
+| Language | Video |
+|----------|--------|
+| **English** | [AWP — Agent Witness Protocol](https://www.youtube.com/watch?v=wzfkXXsyvM8) |
+| **Suomi** | [Agent Witness Protocol (AWP) Suomeksi](https://www.youtube.com/watch?v=kx9qwmpT8Oo) |
+| **Português** | [AWP em Português explicado](https://www.youtube.com/watch?v=Y3QoJZ7vfw8) |
+| **Deutsch** | [Was ein KI-Agent tatsächlich getan hat](https://www.youtube.com/watch?v=POPD2NnXHOE) |
+| **Français** | [Preuves vérifiables pour agents d'IA](https://www.youtube.com/watch?v=hLClWBNlpIM) |
+| **Italiano** | [Dimostrare ciò che un agente IA ha fatto](https://www.youtube.com/watch?v=L5EQY424lLc) |
+| **العربية** | [بروتوكول AWP: كشف التلاعب](https://www.youtube.com/watch?v=tLF23iGZXe8) |
+
+[![Watch AWP in English on YouTube](https://img.youtube.com/vi/wzfkXXsyvM8/hqdefault.jpg)](https://www.youtube.com/watch?v=wzfkXXsyvM8)
+
+---
+
+## Read this before you scroll past
+
+An agent refunds a payment. Issues a document. Acts on a human's mandate.
+
+Six months later someone asks:
+
+> *What exactly did it do? Who authorized it? Can you prove the record was not edited after the fact?*
+
+If the only answer lives **inside the system that produced the action**, you are not holding evidence.  
+You are holding a diary the defendant wrote about themselves.
+
+That is the default state of almost every agent stack shipping right now.
+
+**AWP exists so the answer is a file** — a receipt anyone can re-check offline, with no network call and no relationship to the producer.
+
+---
+
+## What you miss if you skip this
+
+| Without AWP | With AWP |
+|---|---|
+| Logs live where the agent lives — trust the operator | Receipt is **portable** — trust the math |
+| "We did not change it" is a verbal claim | **One flipped byte → named FAIL** |
+| Self-attestation dressed up as audit | **Neutral witness topology** — you cannot witness yourself |
+| Overclaims hide in prose ("verified", "immutable") | Overclaim is **unrepresentable** in the types |
+| "When did this exist?" answered by the producer's clock | External time anchor (OpenTimestamps / RFC 3161 path) |
+| Supply-chain tools answer *who built the binary* | AWP answers *who authorized the **runtime agent action*** |
+
+| Stakeholder | They eventually ask | Cost of "we only have our logs" |
+|---|---|---|
+| **Enterprise buyer** | Can our auditor verify independently? | Deal stalls. Rebuild under deadline. |
+| **Security / GRC** | Prove integrity without the vendor console | Findings. Board questions. |
+| **Legal** | What was authorized, by whom, for which intent? | Weak evidence when it matters. |
+| **You in 12 months** | Did this agent do what we think? | Forensic guesswork. |
+| **Regulators (direction of travel)** | Tamper-evident logging (e.g. EU AI Act Art. 12 style) | Ad-hoc logs map poorly — AWP is architecture, **not** a compliance certificate |
+
+**Real FOMO (no fake timers):**
+
+1. Agents are already in production — un-witnessed actions never get a receipt later.  
+2. Self-attestation is sold as "evidence"; buyers will learn the difference.  
+3. Category formation is now — early teams set the receipt grammar.  
+4. When the producer is offline or gone, unexportable logs die with them.
 
 ---
 
 ## Visual overview
 
-![AWP — the honesty boundary and the four-layer verification chain](docs/assets/awp-verification-chain.png)
+![AWP — honesty boundary and four-layer verification chain](docs/assets/awp-verification-chain.png)
 
-> The **honesty boundary** (left) and the **four-layer verification chain** (right).
-> 🎬 A short video walkthrough is coming soon on YouTube.
+*Left: honesty boundary (what a witness may claim). Right: four-layer verification chain.*
 
----
+![Neutral witness topology](docs/assets/neutral-witness.png)
 
-## What this is
-
-A **`WitnessRecord`** is one structured, signed record of a *governed agent event*:
-
-- **intent** — what the agent set out to do;
-- **authorization** — the credential that permitted it, *and what was verified about that credential*;
-- **artifacts** — what it read or produced, by **hash, never content**;
-- **verifications** — the witness's own **typed testimony** about each external thing it checked.
-
-![Anatomy of a WitnessRecord — intent, authorization, artifacts, and typed verifications](docs/assets/witness-record-anatomy.png)
-
-This package is the **schema and the verifier** — the contract every producer emits and every
-verifier reads. It is deliberately permissive (Apache-2.0) so **anyone** can read the schema,
-validate a record, and re-check a receipt **without a relationship with, and without asking,
-whoever produced it.**
+*You cannot witness your own actions and call it independent.*
 
 ---
 
-## Why AWP exists — the honest 80/20
+## What AWP is
 
-AWP is **not novel cryptography, and it never claimed to be.** It is a careful *composition* of
-mature, off-the-shelf standards. Roughly **80% of AWP is commodity** — the interesting part is the
-**20% nobody else owns.**
+A **`WitnessRecord`** is one structured, signed record of a governed agent event:
 
-### "Why not just use something that already exists?"
+| Block | Captures |
+|---|---|
+| **intent** | What the agent set out to do (action, target, params by hash, policy) |
+| **authorization** | Credential that permitted it — and what was verified about it |
+| **artifacts** | What it read/produced — **hash, never content** |
+| **verifications** | Witness's typed testimony (`claim_class` is a closed enum) |
 
-Because the pieces that exist solve an *adjacent* problem (software **supply-chain provenance** —
-"who built this binary"), not this one: **a typed, independently-verifiable receipt of a
-*runtime agent action* — who authorized it, what was actually verified, with a closed honesty
-boundary.** AWP **adopts** the proven substrate and spends its effort only where nothing suitable exists:
+![Anatomy of a WitnessRecord](docs/assets/witness-record-anatomy.png)
 
-| Layer | AWP uses | Already-existing standard | AWP's stance |
-|-------|----------|---------------------------|--------------|
-| Signed envelope | DSSE + in-toto Statement | in-toto (CNCF graduated) | **adopt** |
-| Transparency log | RFC 9162 raw-byte Merkle | RFC 9162 / Certificate Transparency | **adopt** |
-| Checkpoints | C2SP `tlog-checkpoint` | C2SP | **adopt** |
-| Time anchor | OpenTimestamps / RFC 3161 | OTS / eIDAS | **adopt** |
-| Primitives | Ed25519, SHA-256 | — | **adopt — no new crypto** |
-| Full-stack transparency | — | IETF **SCITT** | **align, not conform** |
-
-> We don't hide this. The spec's Appendix A is literally titled *"Composition, not invention."*
-> Selling AWP as "new cryptography" would be dishonest — and dishonesty is the one thing a
-> *witness* cannot afford.
-
-### The 20% that is genuinely ours
-
-1. **Neutral third-party witness topology.** Most tools in this space are *self-hosted
-   self-attestation* — which, as one competitor's own author admits, is "documentation, not
-   evidence." **You cannot witness your own actions and call it independent.** A truly neutral,
-   non-colluding witness is the differentiator.
-2. **A typed honesty boundary.** Every verification's `claim_class` is one of
-   `integrity-since-witness`, `verified-against`, or `asserted-by` — a *closed enum*. There is no
-   representable value that claims more than a witness can support. We found this in **no** competitor.
-3. **Verified-human-authorizes-agent-action**, bound into the record (principal binding).
-4. **An eIDAS-qualified time path** for regulated-grade timestamping.
-
-None of these live in the envelope bytes — they survive any future format change. **The moat is
-the neutral position and the witness semantics, never the wire format.**
+This package is the **open contract + reference verifier** (Apache-2.0): schema, DSSE envelope, transparency log, time anchors, and offline `awp verify`.
 
 ---
 
-## What it proves — and what it does *not*
-
-AWP records are **tamper-evident**: a verifier can detect whether a record was altered after it was
-witnessed. AWP proves **integrity-since-witness only**. It explicitly does **not** prove:
-
-- **Authenticity-at-origin.** That an artifact is unaltered since witnessing says *nothing* about
-  whether it was legitimate when first seen.
-- **Identity.** AWP can record that a credential was verified against an issuer's keys. It never
-  asserts a person is real or "who they really are." Issuer assurance levels are *echoed*
-  (`assurance_echo`), never asserted by AWP.
-- **Completeness.** A record proves what *was* recorded — never that everything was recorded.
-
-**This boundary is a feature, not a limitation** — enforced in the *types and the verifier output*,
-not just prose. An overclaim (e.g. `verified-against` with a non-`pass` result) **fails
-verification**, and every report prints the boundary line verbatim.
-
----
-
-## How it works — the receipt chain
-
-A **full receipt** is one self-contained file that chains four links. `awp verify` walks the chain
-**offline** and reports `PASS`, or `FAIL` naming the exact layer that broke:
-
-```text
-signed DSSE envelope  →  RFC 9162 inclusion proof  →  signed C2SP checkpoint  →  external time anchor
-"the witnessed record"    "its leaf is in the tree"    "whose root the log signed"   "that root existed at T"
-                                          ↓
-                         awp verify (offline, zero trust) → PASS / FAIL (names the failing layer)
-```
-
-_(The four layers are rendered visually in the [Visual overview](#visual-overview) above.)_
-
-`awp verify` runs, and prints by name, every applicable check: `signature`, `statement`, `schema`,
-`profile`, `claim-class`, `chain-link`, `checkpoint`, `inclusion`, and `anchor`. Time anchors are
-reported as an **honest time bound** ("this record existed no later than T") with the anchor's
-**evidentiary weight** — trust-minimized Bitcoin time for OpenTimestamps, and qualified eIDAS
-weight for RFC 3161 *only* when the pinned trust anchor is declared qualified, never inferred.
-
-### Why a *neutral* witness
-
-![Why a neutral witness — agent → independent witness → anyone verifies offline; self-witnessing is not evidence](docs/assets/neutral-witness.png)
-
----
-
-## Quick start
+## Prove it in 60 seconds
 
 ```sh
-# From a clone (works today):
+git clone https://github.com/RBKunnela/awp.git
+cd awp
 npm install
 npm run build
 
-# Once published to npm, it will be installable directly:
-#   npm install agent-witness-protocol
+# Clean full receipt → every layer PASS
+node bin/awp.js verify samples/receipt.json
+
+# ONE flipped hex char → FAIL, names the layer
+node bin/awp.js verify test/verify/fixtures/full-receipt-tampered.json
 ```
 
-### Validate a record (library)
-
-```ts
-import { validateWitnessRecord, validateProfile } from 'agent-witness-protocol';
-
-const result = validateWitnessRecord(input);
-if (!result.ok) {
-  console.error(result.errors);
-} else {
-  const profile = validateProfile(result.record);
-  if (!profile.ok) console.error(profile.failures);
-}
+```text
+RESULT: PASS   # clean sample — signature, inclusion, anchor, …
+RESULT: FAIL   # tampered — failed checks: inclusion
 ```
 
-A JSON Schema (draft 2020-12) equivalent ships at `src/schema/witness-record.schema.json` for
-non-TypeScript consumers.
+**Tamper becomes evident. The broken layer is named.**
 
-### Verify a receipt — offline, no relationship with the producer
+### Library
 
 ```ts
 import { verify } from 'agent-witness-protocol';
@@ -169,99 +143,189 @@ if (!report.ok) {
 }
 ```
 
-### The 10-minute walkthrough (PASS → one-byte flip → FAIL)
+```ts
+import { validateWitnessRecord, validateProfile } from 'agent-witness-protocol';
 
-A committed full-receipt sample makes the re-performance demo copy-paste — every layer PASS, then a
-single flipped hex char that FAILs the exact tampered layer, all offline:
-
-```sh
-npm run build
-
-# 1. A full receipt verifies — every layer PASS, exit 0:
-node bin/awp.js verify samples/receipt.json
-
-# 2. A copy with ONE flipped hex char in the inclusion proof's tree path —
-#    FAIL, exit 1, naming the "inclusion" check. Every OTHER layer still PASSES,
-#    so the failure is provably isolated to the tampered layer:
-node bin/awp.js verify test/verify/fixtures/full-receipt-tampered.json
+const result = validateWitnessRecord(input);
+if (result.ok) console.log(validateProfile(result.record));
 ```
 
-The sample embeds its own public key, so a single argument is enough. Pass `--pubkey <pem|base64|path>`
-to supply a key explicitly, `--prev <hash>` to check a chain link, `--tsa-pubkey <…> --tsa-qualified`
-to verify an RFC 3161 anchor against a pinned TSA key, or `--json` for a machine report.
+> After npm publish: `npm install agent-witness-protocol`. Today: install from this repo.
 
-**See also:** [`docs/receipts.md`](docs/receipts.md) (bundle structure + the exact, re-implementable
-leaf rule), [`docs/anchoring.md`](docs/anchoring.md) (time anchors), and
-[`docs/spec/AWP-v0.1.md`](docs/spec/AWP-v0.1.md) (the full specification).
+---
+
+## How a receipt works
+
+```text
+signed DSSE envelope  →  RFC 9162 inclusion  →  signed C2SP checkpoint  →  external time anchor
+"the witnessed record"   "leaf is in the tree"   "log signed this root"     "root existed by T"
+                              ↓
+              awp verify (offline, zero trust) → PASS / FAIL (names failing layer)
+```
+
+| Check | On PASS |
+|---|---|
+| `signature` / `statement` | Envelope intact; subject binds intent |
+| `schema` / `profile` | Shape + profile constraints hold |
+| `claim-class` | No honesty-boundary overclaim |
+| `checkpoint` | Log signed note verifies |
+| `inclusion` | Merkle path recomputes same root |
+| `anchor` | External time commits that root |
+
+**Two keys on purpose:** envelope key ≠ log key. Full wire shape: [docs/receipts.md](docs/receipts.md).
+
+---
+
+## Honesty boundary (the moat)
+
+AWP proves **integrity-since-witness only**.
+
+| People want this claim | AWP answer |
+|---|---|
+| Authenticity-at-origin | **No** |
+| Identity of a person | **No** (issuer assurance may be *echoed* only) |
+| Completeness | **No** |
+| "Tamper-proof / uncorruptible" | **No** — only tamper-**evident** |
+| Court admissibility | **No** — evidence for forums to judge |
+
+| `claim_class` | Means |
+|---|---|
+| `integrity-since-witness` | Unaltered since witnessed |
+| `verified-against` | Checked against named issuer keys (truth → issuer) |
+| `asserted-by` | Honest "we were told" |
+
+Overclaim fails verification. Every report reprints the boundary line.
+
+---
+
+## The honest 80/20
+
+AWP is **not novel cryptography**. ~80% is commodity composition. The **20%** is why it matters.
+
+| Layer | AWP uses | Stance |
+|---|---|---|
+| Signed envelope | DSSE + in-toto | **adopt** |
+| Transparency log | RFC 9162 | **adopt** |
+| Checkpoints | C2SP `tlog-checkpoint` | **adopt** |
+| Time anchor | OpenTimestamps / RFC 3161 | **adopt** |
+| Primitives | Ed25519, SHA-256 | **adopt — no new crypto** |
+| Full-stack | IETF SCITT | **align, not conform** |
+
+### The defensible 20%
+
+1. **Neutral third-party witness topology** — self-attestation is not independence  
+2. **Typed honesty boundary** — closed enum; overclaim fails closed  
+3. **Principal binding** — verified human authorizes *this* agent action  
+4. **eIDAS-qualified time path** when pinned as qualified  
+
+**Moat = neutral position + witness semantics — never the wire format.**
 
 ---
 
 ## Profiles
 
-A record carries a `profile` that selects which blocks are required:
-
 | Profile | Requires |
 |---|---|
-| `pay` | an `authorization` with a mandate-class credential **and** at least one verification on it |
-| `doc` | at least one `artifact`; authorization optional (unattended generation is witnessable — it just proves less) |
-| `principal` | an `authorization` whose credential is bound to *this* intent (`challenge_binding` or `presentation_binding`) |
-| `composite` | intent + at least one artifact + mandate-class authorization + at least one verification (union of `pay` and `doc`) |
+| `pay` | Mandate-class authorization + ≥1 verification |
+| `doc` | ≥1 artifact |
+| `principal` | Auth bound to *this* intent |
+| `composite` | Union of pay + doc |
 
 ---
 
-## Media & further reading
+## Produce a receipt (implementers)
 
-- 📄 **[Cryptographic Architecture Statement (PDF)](docs/awp-cryptographic-architecture-statement.pdf)** — plain-language report on what AWP proves and how the pieces fit.
-- 🎬 **Video walkthrough** — the engineering-logic explainer, coming soon on YouTube (embed to follow).
-- 📘 **[Full specification](docs/spec/AWP-v0.1.md)** · **[Receipt structure](docs/receipts.md)** · **[Time anchoring](docs/anchoring.md)** · **[The case for AWP](docs/THE-CASE-FOR-AWP.md)**
+| Module | Role |
+|---|---|
+| `schema` | Validate `WitnessRecord` + profiles |
+| `envelope` | in-toto Statement → DSSE sign |
+| `log` | RFC 9162 store, inclusion, C2SP checkpoints |
+| `anchor` | OpenTimestamps + RFC 3161 verify |
+| `ops` | Assemble full receipt (`checkpoint` + `proof`) |
+| `verify` / CLI | Offline re-performance for anyone |
+
+| Key | Signs | Holder |
+|---|---|---|
+| Envelope key | Witnessed record | Producer / customer deployment |
+| Log key | Checkpoint over Merkle root | (Ideally neutral) log operator |
 
 ---
 
-## Open core — and how the paid part relates
+## Open core
 
-AWP is deliberately split so the open piece is genuinely useful on its own:
+| Open (this repo · Apache-2.0) | Paid (separate) |
+|---|---|
+| Schema + validators + SDK | Production issuer engine |
+| Offline `awp verify` | Operated **neutral witness** at scale |
 
-- **Open (this repo, Apache-2.0):** the `WitnessRecord` schema + the `awp verify` reference
-  verifier + SDK. Read it, fork it, verify anyone's receipts with it.
-- **Paid (separate, proprietary):** a production engine and an **operated neutral witness service**
-  that issues receipts at scale — multi-tenant, metered, with hosted assurance.
+Giving the verifier away is how "AWP-verifiable receipt" becomes a recognized artifact.
 
-**Why giving the verifier away helps rather than cannibalizes:** AWP is the tool customers use to
-**independently check hosted receipts offline**. The more `awp verify` spreads, the more
-"AWP-verifiable receipt" becomes a recognized artifact — and a neutral hosted witness is its natural
-supplier. The verifier *enables* the service; it doesn't compete with it.
+---
+
+## Two futures
+
+**Without independent receipts:** disputes hit console screenshots and internal logs. Rebuild starts while production keeps writing unrecoverable history.
+
+**With AWP:** every governed action can emit a portable receipt. Buyers run `awp verify` offline. Tamper names a layer. Time is externally bounded.
 
 ---
 
 ## Roadmap
 
-- [x] `WitnessRecord` schema + profile validators
-- [x] DSSE + in-toto signed envelope
-- [x] RFC 9162 transparency log (inclusion proofs + C2SP checkpoints)
-- [x] Time anchors: OpenTimestamps (verify + submit/upgrade) + RFC 3161 qualified-TSA verify slot
-- [x] Offline `awp verify` CLI + library (368/368 tests, 0 skipped)
-- [x] **Open-sourced** — public on GitHub under Apache-2.0
-- [ ] First `npm publish` (finalize the `awp.dev` on-wire namespace first)
-- [ ] Adversarial hardening of the principal-binding model
-- [ ] Optional SCITT export adapter (only if a customer requires it)
+- [x] Schema + profile validators  
+- [x] DSSE + in-toto envelope  
+- [x] RFC 9162 log + C2SP checkpoints  
+- [x] OpenTimestamps + RFC 3161 verify slot  
+- [x] Offline `awp verify` (368/368 tests)  
+- [x] Public GitHub (Apache-2.0)  
+- [x] Multilingual YouTube explainers ([@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi))  
+- [x] Permanent namespace `awp.dev` + CI + SECURITY/NOTICE + CHANGELOG  
+- [ ] First `npm publish` (`agent-witness-protocol`) — operator GO  
+- [ ] Principal-binding adversarial hardening  
+- [ ] Optional SCITT export adapter (only if a customer requires it)  
+
+---
+
+## Docs
+
+| Resource | Link |
+|---|---|
+| Cryptographic Architecture (PDF) | [docs/awp-cryptographic-architecture-statement.pdf](docs/awp-cryptographic-architecture-statement.pdf) |
+| Full specification | [docs/spec/AWP-v0.1.md](docs/spec/AWP-v0.1.md) |
+| Receipt structure | [docs/receipts.md](docs/receipts.md) |
+| Time anchoring | [docs/anchoring.md](docs/anchoring.md) |
+| Strategic case | [docs/THE-CASE-FOR-AWP.md](docs/THE-CASE-FOR-AWP.md) |
+| Security policy | [SECURITY.md](SECURITY.md) |
+| Changelog | [CHANGELOG.md](CHANGELOG.md) |
+| YouTube channel | [youtube.com/@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi) |
 
 ---
 
 ## Support
 
-AWP is built and maintained in the open. If it saves you a headache — or you just want to see the
-neutral-witness idea grow — **you can buy me a coffee.** It genuinely helps keep this maintained.
-
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support%20AWP-ffdd00.svg?logo=buymeacoffee&logoColor=black&style=for-the-badge)](https://buymeacoffee.com/aiagentsprp)
 
-☕ **https://buymeacoffee.com/aiagentsprp**
+https://buymeacoffee.com/aiagentsprp
 
 ---
 
 ## License
 
-Code: **Apache-2.0** — see [LICENSE](./LICENSE). Specification document: **CC-BY-4.0**
-(authorship: Renata Baldissara-Kunnela).
+- **Code:** [Apache-2.0](./LICENSE)  
+- **Specification:** CC-BY-4.0 (author: Renata Baldissara-Kunnela)  
+- **Copyright:** FriendlyAI Oy — see [NOTICE](./NOTICE)
 
-> AWP verify proves **integrity-since-witness only** — not completeness, not authenticity-at-origin,
-> not the identity of any person.
+The `awp.dev` namespace (when present on the wire) is a **format identifier**, not an endorsement of any particular producer or receipt.
+
+---
+
+### Bottom line
+
+> **AWP verify proves integrity-since-witness only** — not completeness, not authenticity-at-origin, not the identity of any person.
+
+That sentence is why serious people trust the rest.
+
+Your agents are already writing history.  
+**Either that history is independently re-checkable — or it is just a story you tell about yourself.**
+
+Clone it. Flip one byte. Watch the layer fail. Then decide if you want to keep shipping agents without receipts.

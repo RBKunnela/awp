@@ -50,12 +50,11 @@ export const STATEMENT_TYPE = 'https://in-toto.io/Statement/v1' as const;
 export const PAYLOAD_TYPE = 'application/vnd.in-toto+json' as const;
 
 /**
- * PLACEHOLDER predicate namespace (AWP spec §4 / ADR operator decision 1). The
- * real domain is an operator decision; this constant exists so renaming before
- * publish is a one-line edit, never a refactor. Marked clearly as a placeholder
- * so no auditor mistakes it for a committed domain.
+ * Permanent AWP predicate namespace (operator decision 2026-06-29).
+ * Wire identity: `https://awp.dev/witness-record/v1`. Irreversible once published
+ * (AWP-PUBLISH-1). Schema `$id` is the same URI with `/schema.json` suffix.
  */
-export const PREDICATE_TYPE = 'https://awp.placeholder.invalid/witness-record/v1' as const;
+export const PREDICATE_TYPE = 'https://awp.dev/witness-record/v1' as const;
 
 /** Lowercase 64-char hex SHA-256, the only digest representation AWP accepts. */
 const SHA256_HEX = /^[a-f0-9]{64}$/;

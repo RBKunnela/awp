@@ -325,48 +325,61 @@ Receipts). AWP makes a deliberate distinction:
   conformance** to a specification that has not reached RFC/final status.
 
 A producer is *AWP-conformant* when it emits records that pass `awp verify` against this
-document's rules. AWP conformance is a statement about the record, never about any external
-standards body's certification, and never about legal compliance.
+document's rules. AWP conformance is a statement about the record and this document's rules —
+**not** about any external standards body's certification, **not** legal compliance in any
+jurisdiction, and **not** EU AI Act certification or any other statutory conformity assessment.
+(§8 maps AWP to AI Act Article 12 logging *architecture*; that mapping is not a claim of
+compliance.)
 
 ### 9.1 Why DSSE/in-toto, and not a COSE_Sign1 / SCITT profile (today)
 
-AWP's differentiation lives in the **payload** — the `WitnessRecord` carried as an in-toto
-Statement predicate (human authorization with intent binding, the `claim_class` honesty
-boundary, eIDAS-qualified time, the customer-keyed trust model). It does **not** live in the
-outer signing envelope. AWP therefore signs with the **DSSE + in-toto** envelope, whose
-ecosystem (CNCF-graduated in-toto, the Sigstore family, RFC 9162 + C2SP) is fielded and
-offline-verifiable with off-the-shelf tooling **today**, rather than COSE_Sign1, whose
-SCITT/COSE-Receipts profile is still an IETF draft.
+The **normative envelope** is **DSSE + in-toto Statement (JSON)**. AWP's differentiation lives
+in the **payload** — the `WitnessRecord` carried as an in-toto Statement predicate (human
+authorization with intent binding, the `claim_class` honesty boundary, eIDAS-qualified time,
+the customer-keyed trust model). It does **not** live in the outer signing envelope. Value is
+in the predicate, not in envelope bytes. AWP therefore signs with the **DSSE + in-toto**
+envelope, whose ecosystem (CNCF-graduated in-toto, the Sigstore family, RFC 9162 + C2SP) is
+fielded and offline-verifiable with off-the-shelf tooling **today**, rather than COSE_Sign1,
+whose SCITT/COSE-Receipts profile is still an IETF draft.
 
-The recurring question — *"why isn't AWP just a SCITT profile?"* — has a precise answer:
+The recurring question — *"why isn't AWP just a SCITT profile?"* — has a precise answer (the
+CTO-objection answer):
 
 > SCITT's deployment model assumes an always-online, append-only Transparency Service as the
 > universal trust anchor. AWP's topology is **customer-keyed**: the neutral witness is operated
 > by or for the customer, and verification requires no key held by the protocol's operator and
-> no third-party registry. AWP **composes with** SCITT's transparency and non-repudiation
-> principles (this §9) while deliberately not binding a record's validity to a third party's
-> availability.
+> no third-party registry. A customer-keyed witness is deliberately *not* SCITT's always-online
+> global registry model. **"Align ≠ conform" is a product choice, not a gap.** AWP **composes
+> with** SCITT's transparency and non-repudiation principles (this §9) while deliberately not
+> binding a record's validity to a third party's availability.
 
 The RFC 9162 Merkle layer and C2SP checkpoints (§4) are already the SCITT-compatible bridge: a
-future migration changes only the outer envelope; the Merkle anchoring, timestamping, and the
-entire `WitnessRecord` payload remain byte-identical.
+future export or envelope change touches only the outer wrapper; the Merkle anchoring,
+timestamping, and the entire `WitnessRecord` payload remain byte-identical.
 
-### 9.2 SCITT migration gate (deferred — do not build until triggered)
+### 9.2 Deferred COSE_Sign1 / SCITT export path (migration gate)
 
-A COSE Receipt **export** path (the record re-serialized in COSE_Sign1 for SCITT-ecosystem
-consumers, with DSSE remaining the canonical verification path) is **specified-as-deferred**.
-It is not built, and a dual-envelope canonical format is explicitly **rejected** (it doubles the
-verification surface and signals indecision). Re-open this decision only when **any** of the
-following triggers fires:
+A *deferred, additive* **COSE_Sign1 receipt-export adapter** may be added later as an
+**optional export** for SCITT-ecosystem consumers. It is **not** a replacement of DSSE, and a
+dual-envelope *canonical* format is explicitly **rejected** (it doubles the verification surface
+and signals indecision). Until built:
 
-1. A named design partner, enterprise, or government audit makes COSE/SCITT conformance a hard
-   procurement requirement; **or**
-2. `draft-ietf-scitt-architecture` reaches final RFC status **and** a SCITT conformance test
-   suite exists; **or**
-3. The next scheduled architecture review (no earlier than Q4 2026).
+- The normative verification path remains DSSE + in-toto Statement (JSON).
+- The export path is **specified-as-deferred** — not implemented in v0.1.
+- Any future adapter re-serializes the same record for COSE/SCITT consumers; DSSE stays the
+  canonical path that `awp verify` checks.
 
-Until a trigger fires, AWP remains DSSE/in-toto + "SCITT-aligned" per §9. *(Decision basis:
-roundtable 2026-06-29, unanimous — `docs/paybot/competitive/awp-scitt-envelope-roundtable-2026-06-29.md` in the AIOX-Enterprise repo.)*
+Re-open this decision only when **any one** of the following triggers fires:
+
+1. A named customer (design partner, enterprise, or government audit) makes COSE/SCITT
+   conformance a hard procurement requirement; **or**
+2. SCITT reaches final RFC status **and** a SCITT conformance test suite exists; **or**
+3. The next scheduled architecture review — no earlier than **Q4 2026**.
+
+Until a trigger fires, AWP remains DSSE/in-toto + "SCITT-aligned" per this §9 — align, not
+conform. *(Decision basis: roundtable 2026-06-29, unanimous —
+`docs/paybot/competitive/awp-scitt-envelope-roundtable-2026-06-29.md` in the AIOX-Enterprise
+repo.)*
 
 ---
 

@@ -1,9 +1,21 @@
 {
   "name": "agent-witness-protocol",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Open schema and verifier for the Agent Witness Protocol (AWP) — tamper-evident, customer-keyed, offline-verifiable witness records. Verify a receipt without trusting, or asking, the producer.",
   "type": "module",
   "license": "Apache-2.0",
+  "author": {
+    "name": "FriendlyAI Oy / Renata Baldissara-Kunnela",
+    "url": "https://github.com/RBKunnela"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RBKunnela/awp.git"
+  },
+  "homepage": "https://github.com/RBKunnela/awp#readme",
+  "bugs": {
+    "url": "https://github.com/RBKunnela/awp/issues"
+  },
   "keywords": [
     "witness",
     "audit",
@@ -50,17 +62,21 @@
     "src/schema/witness-record.schema.json",
     "samples/receipt.json",
     "LICENSE",
-    "README.md"
+    "NOTICE",
+    "README.md",
+    "SECURITY.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm test",
     "type-check": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "regen:fixtures": "node test/regenerate-signed-fixtures.mjs"
   },
   "dependencies": {
     "zod": "^3.23.8"

@@ -1,0 +1,23 @@
+Agent Witness Protocol (AWP)
+Copyright 2024–2026 FriendlyAI Oy
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+
+You may not use this file except in compliance with the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+---
+
+Protocol specification text under docs/spec/ (and related normative prose)
+is separately licensed under Creative Commons Attribution 4.0 International
+(CC-BY-4.0). Author: Renata Baldissara-Kunnela.
+
+Code, CLI, schema machinery, and tests remain Apache-2.0 (FriendlyAI Oy)
+unless a file states otherwise.
+
+The namespace string https://awp.dev is a wire-format / schema identifier.
+Use of that namespace does not imply endorsement by FriendlyAI Oy or the
+specification author.

@@ -1,6 +1,6 @@
 # Story AWP-PUBLISH-1 — Publish AWP (agent-witness-protocol) v0.2.0 to npm
 
-**Status:** Validated — @po GO (10/10 checklist). Namespace + envelope decided. Ready for @dev; blocked only on 🔒 `awp.dev` registration + operator publish GO.
+**Status:** Implementation advanced — Tasks 2–6 + 10 done (namespace, fixtures, CI, hygiene, §9). **368/368 green.** Blocked only on 🔒 domain ownership confirmation + npm account GO + Task 7–9 (secret-scan, release pipeline, first publish).
 **Repo:** github.com/RBKunnela/awp (+ consumer: paybotfin-witness)
 **Created:** 2026-06-29
 **Source:** Roundtable (8 agents, unanimous PUBLISH-AFTER-GATES) + advisory-council (cognitive lenses) — see `AIOX-Enterprise/docs/paybot/PAYBOTFIN-AWP-WITNESS-CLAIMS-MAP.md` §9.
