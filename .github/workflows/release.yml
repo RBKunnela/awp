@@ -1,0 +1,77 @@
+name: Release
+
+# Publishes agent-witness-protocol to npm when a GitHub Release is published.
+# Ordinary pushes to main run build + tests only (ci.yml). Publishing is a
+# deliberate act — never on every commit.
+#
+# Guards (fail-fast / idempotent):
+#   - tag/version match: Release tag (e.g. v0.2.0) must equal package.json
+#   - skip-if-already-published: re-runs are safe (no E409 on a live version)
+#   - dist-tag routing: prereleases → `next`; stable → `latest`
+#
+# Requires repo secret NPM_TOKEN (npm Automation/granular token with publish
+# rights to agent-witness-protocol). Copy from paybot-sdk if missing — see
+# docs/RELEASING.md. npm may return 404 (not 403) when the token lacks publish
+# permission; rotate if publishes 404. Prefer long/no-expiry Automation tokens.
+#
+# Provenance: id-token: write enables `npm publish --provenance` (OIDC).
+# If OIDC/provenance is unavailable for the org/package, drop --provenance
+# from the publish step; NODE_AUTH_TOKEN publish still works.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write  # required for `npm publish --provenance` (OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Verify release tag matches package.json version
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG" ]; then
+            echo "::error::Release tag '$GITHUB_REF_NAME' (=> $TAG) does not match package.json version '$PKG_VERSION'."
+            exit 1
+          fi
+          echo "Releasing agent-witness-protocol@$PKG_VERSION"
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+      - name: Skip if version already published
+        id: guard
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          if npm view "agent-witness-protocol@${PKG_VERSION}" version >/dev/null 2>&1; then
+            echo "agent-witness-protocol@${PKG_VERSION} is already on npm — skipping publish."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        if: steps.guard.outputs.skip == 'false'
+        # Prereleases go to the `next` dist-tag so they never move `latest`.
+        # --provenance needs permissions.id-token: write (OIDC). If provenance
+        # fails for the package, remove --provenance and re-run the release job.
+        run: npm publish --provenance --access public --tag "$DIST_TAG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
