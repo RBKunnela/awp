@@ -2,7 +2,16 @@
 
 ### Offline-verifiable receipts for what AI agents do.
 
-**Install and use today:**
+[![npm](https://img.shields.io/npm/v/agent-witness-protocol.svg)](https://www.npmjs.com/package/agent-witness-protocol)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+[![Tests](https://img.shields.io/badge/tests-368%2F368-brightgreen.svg)](#prove-it-works-60-seconds)
+[![YouTube](https://img.shields.io/badge/YouTube-@FriendlyAI__fi-FF0000.svg?logo=youtube&logoColor=white)](https://www.youtube.com/@FriendlyAI_fi)
+
+> **npm:** [`agent-witness-protocol@0.2.0`](https://www.npmjs.com/package/agent-witness-protocol) ·  
+> **Wire type:** [`https://awp.paybotfin.com/witness-record/v1`](https://awp.paybotfin.com/witness-record/v1) ·  
+> **Schema:** [`…/schema.json`](https://awp.paybotfin.com/witness-record/v1/schema.json)
+
+**Start here (copy/paste):**
 
 ```bash
 npm install agent-witness-protocol
@@ -10,13 +19,207 @@ npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
 # → RESULT: PASS
 ```
 
-[![npm](https://img.shields.io/npm/v/agent-witness-protocol.svg)](https://www.npmjs.com/package/agent-witness-protocol)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
-[![Tests](https://img.shields.io/badge/tests-368%2F368-brightgreen.svg)](#prove-it-works)
-[![YouTube](https://img.shields.io/badge/YouTube-@FriendlyAI__fi-FF0000.svg?logo=youtube&logoColor=white)](https://www.youtube.com/@FriendlyAI_fi)
+---
 
-> **Wire type (live):** [`https://awp.paybotfin.com/witness-record/v1`](https://awp.paybotfin.com/witness-record/v1) ·  
-> **Schema:** [`…/schema.json`](https://awp.paybotfin.com/witness-record/v1/schema.json) · **npm:** `agent-witness-protocol@0.2.0`
+## User guide (read this first)
+
+This section is the full **how to install, how to use, what AWP does, what it does not do**, and **why you need a receipt file** from an issuer (payment platform, witness service, or other governed system).
+
+### 1) What AWP is
+
+**AWP** is an open protocol + npm package that lets **anyone** re-check a portable **receipt JSON** offline — without logging into the vendor console and without trusting the producer.
+
+It is **not** a payment app by itself. It is the **verify** layer for evidence that some platform already produced.
+
+```text
+  Agent / system acts
+         │
+         ▼
+  Issuer (witness service, payment platform, governance hub…)
+  creates a receipt file  ──►  receipt.json  (the “body” you keep)
+         │
+         ▼
+  Anyone with this package:
+  npx awp verify receipt.json  ──►  PASS or FAIL
+```
+
+### 2) Critical: you need a receipt body (the file)
+
+`awp verify` **does not** invent evidence. It only checks a **receipt you already have**.
+
+| You have… | What you do |
+|-----------|-------------|
+| A `receipt.json` (or export pack containing AWP receipts) from a **witness / platform** | Run `npx awp verify path/to/receipt.json` |
+| Only a payment success screen / bank API / chat log | That is **not** an AWP receipt — install does nothing until an issuer produces one |
+| Nothing yet | Use the **sample** shipped in the package to learn the tool (below), then get real receipts from your platform |
+
+**Who issues the receipt body?**
+
+| Issuer | Role |
+|--------|------|
+| **PayBotFin witness** (hosted / private product) | Neutral multi-tenant **issuer** of AWP receipts at scale |
+| **PayBot / paybot-core** (payments + governance) | May authorize/pay; production path attaches witness receipts (wiring matures over time) |
+| **Any partner platform** that implements AWP | Can issue valid receipts if they follow the schema + crypto layers |
+| **This open package alone** | Lets you **verify** (and build test receipts in ops/tests) — it is **not** your production “install and magically witness the world” installer |
+
+**Rule of thumb:**  
+- **Install AWP** = you can **verify**.  
+- **PayBot / witness / platform** = someone **issues** the receipt you verify.  
+- Payment success ≠ AWP PASS (two different checks until your platform wires them).
+
+See packaging lock: [AWP open / PayBot private (Chefe 1057)](docs/decisions/2026-07-31-ADR-AWP-OSS-PAYBOT-PRIVATE-1057.md).
+
+### 3) What AWP **does** (when you have a receipt)
+
+`npx awp verify receipt.json` runs a fail-closed chain of checks, including:
+
+| Check (examples) | Meaning |
+|------------------|---------|
+| envelope + signature | DSSE envelope well-formed; Ed25519 signature holds |
+| statement | in-toto Statement binds intent |
+| schema / profile | WitnessRecord shape + profile constraints (`pay`, `doc`, …) |
+| claim-class | Honesty boundary enforced in types |
+| checkpoint + inclusion | Receipt is in a signed transparency log (RFC 9162) |
+| anchor | Time bound when present (e.g. OpenTimestamps / TSA) |
+
+If someone flips one byte of a sealed receipt → **RESULT: FAIL**.
+
+### 4) What AWP **does not** do (honesty boundary)
+
+Printed on every successful verify report as well:
+
+| Proves | Does **not** prove |
+|--------|---------------------|
+| Receipt is consistent and correctly signed | Authenticity of the original real-world act |
+| Unaltered since it was witnessed | Identity of a human |
+| Inclusion in a signed log + time bound (when present) | Completeness (“every action was recorded”) |
+| Integrity-**since-witness** | That the vendor console is honest without a receipt file |
+
+Also **not** this package’s job:
+
+- Replacing a bank, card network, or wallet  
+- Scanning “any ledger on the internet” without a receipt file  
+- Automatically turning every PayBot payment into a receipt (platform must issue/attach — see roadmap)  
+- Claiming “we replaced SIEM” by itself — AWP is the **receipt verify** layer of a larger stack  
+
+That boundary is a **feature** (liability firewall), not a bug.
+
+### 5) How to install (all options)
+
+Requires **Node.js** (npm or npx). Package is **ESM-only** — for library imports set `"type": "module"` in `package.json` or use `.mjs`.
+
+#### Option A — one-shot with npx (no project install)
+
+```bash
+npx --yes --package=agent-witness-protocol@0.2.0 awp verify ./my-receipt.json
+```
+
+Use this when you only want to verify a file you already received.
+
+#### Option B — install into a project (recommended for builders)
+
+```bash
+npm install agent-witness-protocol
+
+# CLI (uses local bin)
+npx awp verify ./my-receipt.json
+
+# Sample shipped in the package (always works offline)
+npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
+# → RESULT: PASS
+```
+
+#### Option C — global CLI (optional)
+
+```bash
+npm install -g agent-witness-protocol
+awp verify ./my-receipt.json
+```
+
+#### Option D — from source (maintainers / contributors)
+
+```bash
+git clone https://github.com/RBKunnela/awp.git
+cd awp && npm install && npm run build
+node bin/awp.js verify samples/receipt.json
+```
+
+| Surface after install | How |
+|-----------------------|-----|
+| CLI | `npx awp verify <file.json>` |
+| Library | `import { verify, validateWitnessRecord } from 'agent-witness-protocol'` |
+| Subpaths | `agent-witness-protocol/schema`, `/verify`, `/envelope`, `/anchor`, `/log` |
+| Schema (non-TS) | package schema file or [live schema](https://awp.paybotfin.com/witness-record/v1/schema.json) |
+
+### 6) How to use it (day-to-day)
+
+#### Auditor / customer (most common)
+
+1. Get the **receipt file** from the platform (download, email attachment, export pack, API).  
+2. Keep that file (it is the evidence, not a screenshot).  
+3. On any machine with Node:
+
+```bash
+npx awp verify ./receipts/action-2026-07-21.json
+```
+
+4. Read the report: **RESULT: PASS** or **FAIL** + named failed checks.  
+5. Share the **file** with counsel/auditors so they can re-run the same command.
+
+#### Agent builder
+
+1. After a governed action, **save** the receipt JSON your platform/witness returns.  
+2. Do **not** re-implement Merkle/DSSE — import this package or call the CLI.  
+3. Optionally assert `verify(...).ok` in CI before shipping a report to a client.
+
+#### Platform operator (PayBotFin / partner)
+
+1. **Issue** receipts with a witness service that **imports** `agent-witness-protocol` (never reimplements crypto).  
+2. Hand the file to the customer.  
+3. They verify offline with this same public package.
+
+#### Integrator (library)
+
+```ts
+import { verify, validateWitnessRecord } from 'agent-witness-protocol';
+import { readFileSync } from 'node:fs';
+
+const receipt = JSON.parse(readFileSync('./receipts/action.json', 'utf8'));
+
+// Shape only
+const shape = validateWitnessRecord(receipt);
+if (!shape.ok) throw new Error(JSON.stringify(shape.errors));
+
+// Full verify (library needs publicKey; CLI can read public_key_pem from the file)
+const report = verify(receipt, { publicKey: receipt.public_key_pem });
+if (!report.ok) {
+  for (const c of report.checks) if (!c.ok) console.error(c.name, c.reason);
+  process.exit(1);
+}
+console.log('PASS — integrity-since-witness');
+```
+
+CLI flags: `--pubkey`, `--prev`, `--tsa-pubkey`, `--tsa-qualified`, `--json`.
+
+### 7) Roles at a glance
+
+| You are… | You use AWP to… | You still need… |
+|----------|-----------------|-----------------|
+| **Auditor / customer** | Verify a receipt offline | The receipt file from the issuer |
+| **Agent builder** | Keep + re-check evidence | Platform that issues receipts |
+| **Platform (e.g. PayBotFin)** | Issue via witness that imports this package | Hosted/private witness engine (not this OSS alone) |
+| **Integrator** | Validate schema + call `verify()` | Receipt bundles from production |
+
+### 8) What a receipt is (the file body)
+
+One JSON bundle chaining four layers:
+
+```text
+DSSE + in-toto envelope  →  RFC 9162 inclusion  →  C2SP checkpoint  →  time anchor (OTS / RFC 3161)
+```
+
+Named CLI checks (fail-closed):  
+`envelope-shape`, `payloadType`, `signature`, `statement`, `schema`, `profile`, `claim-class`, `chain-link`, `checkpoint`, `inclusion`, `anchor`.
 
 ---
 
@@ -36,35 +239,6 @@ Agent acts  →  (optional) PayBot governs / pays  →  witness issues AWP recei
                               anyone:  npx awp verify receipt.json  →  PASS / FAIL
 ```
 
-### Honesty boundary (read this once)
-
-`awp verify` proves **integrity-since-witness only**:
-
-| Proves | Does **not** prove |
-|--------|---------------------|
-| Receipt is consistent and correctly signed | Authenticity of the original act |
-| Unaltered since witnessed | Identity of a human |
-| Inclusion in a signed log + time bound (when present) | Completeness (“everything was recorded”) |
-
-That line is printed on every report. It is a feature (liability firewall), not a bug.
-
----
-
-## Install
-
-```bash
-npm install agent-witness-protocol
-```
-
-**ESM only** (same as paybot-sdk). In `package.json` set `"type": "module"`, or use `.mjs`.
-
-| Surface | Import / command |
-|---------|------------------|
-| Full package | `import { verify, validateWitnessRecord } from 'agent-witness-protocol'` |
-| Subpaths | `agent-witness-protocol/schema`, `/verify`, `/envelope`, `/anchor`, `/log` |
-| CLI | `npx awp verify <file.json>` |
-| Schema (non-TS) | `node_modules/agent-witness-protocol/…/witness-record.schema.json` or [live schema](https://awp.paybotfin.com/witness-record/v1/schema.json) |
-
 ---
 
 ## Prove it works (60 seconds)
@@ -72,7 +246,7 @@ npm install agent-witness-protocol
 ```bash
 npm install agent-witness-protocol
 
-# 1) Clean sample shipped in the package
+# 1) Clean sample shipped in the package (no issuer account needed)
 npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
 # RESULT: PASS  (signature, schema, inclusion, checkpoint, anchor, …)
 
@@ -89,6 +263,12 @@ console.log(report.ok ? 'PASS' : 'FAIL', report.checks.filter(c => !c.ok).map(c 
 EOF
 ```
 
+**One-shot without a project folder:**
+
+```bash
+npx --yes --package=agent-witness-protocol@0.2.0 awp verify ./my-receipt.json
+```
+
 **Tamper isolation (from a clone of this repo):** flip one hex char in the inclusion path → `FAIL` names `inclusion`; other layers can still PASS.
 
 ```bash
@@ -103,28 +283,6 @@ node bin/awp.js verify test/verify/fixtures/full-receipt-tampered.json
 npm i agent-witness-protocol   # or use local build
 node tools/exhaustive-npm-smoke.mjs
 ```
-
----
-
-## How a user should use AWP (roles)
-
-| You are… | What you do with AWP |
-|----------|----------------------|
-| **Agent builder** | After a governed action, **keep the receipt JSON** your platform/witness returns. Do not re-implement crypto. |
-| **Auditor / customer** | Run `npx awp verify receipt.json` offline. Share the file, not console screenshots. |
-| **Platform (PayBotFin)** | **Issue** receipts via a witness service that imports this package (never reimplements Merkle/DSSE). |
-| **Integrator** | Validate shapes with `validateWitnessRecord` / `validateProfile`; verify bundles with `verify()`. |
-
-### What a receipt is
-
-One JSON file chaining four layers:
-
-```text
-DSSE + in-toto envelope  →  RFC 9162 inclusion  →  C2SP checkpoint  →  time anchor (OTS / RFC 3161)
-```
-
-CLI checks (named, fail-closed):  
-`envelope-shape`, `payloadType`, `signature`, `statement`, `schema`, `profile`, `claim-class`, `chain-link`, `checkpoint`, `inclusion`, `anchor`.
 
 ---
 
@@ -394,9 +552,18 @@ The `awp.paybotfin.com` namespace is a **format identifier**, not an endorsement
 ### Bottom line
 
 ```bash
+# Install verifier (open)
 npm install agent-witness-protocol
 npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
+
+# Real evidence: need a receipt body from a witness / payment platform, then:
+npx awp verify ./my-receipt.json
 ```
 
-Use **paybot-sdk / paybot-mcp** to **act**.  
-Use **AWP** to **prove** the act was recorded without trusting the producer.
+| Layer | Does |
+|-------|------|
+| **AWP** (this package) | **Verify** offline — anyone, npm/npx |
+| **PayBot / witness / platform** | **Issue** the receipt body you verify |
+| **paybot-sdk / paybot-mcp** | **Act** (pay, tools) — not a substitute for AWP PASS |
+
+Full user guide: [§ User guide](#user-guide-read-this-first).
