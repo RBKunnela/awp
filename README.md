@@ -221,6 +221,53 @@ DSSE + in-toto envelope  →  RFC 9162 inclusion  →  C2SP checkpoint  →  tim
 Named CLI checks (fail-closed):  
 `envelope-shape`, `payloadType`, `signature`, `statement`, `schema`, `profile`, `claim-class`, `chain-link`, `checkpoint`, `inclusion`, `anchor`.
 
+### 9) Not only payments — multi-profile (pay · doc · principal · composite)
+
+AWP started next to **PayBot payments**, but the **protocol is not pay-only**.  
+One schema; four **profiles** (constraint sets). The `intent.action` verb can be any governed action (`payment.refund`, `doc.generate`, `order.place`, …).
+
+| Profile | When to use | Minimum (extra beyond core fields) |
+|---------|-------------|-------------------------------------|
+| **pay** | Agent moved money under a payment mandate | Mandate-class `authorization` + ≥1 `verification` |
+| **doc** | Agent produced or read a document | ≥1 `artifact` (authorization optional) |
+| **principal** | A verified human stands behind *this* action | Credential **bound to this intent** (not just a session) |
+| **composite** | E-commerce scene (pay + doc + human) | Union of pay + doc minimums |
+
+**Shape/profile samples** (predicates, for learning + library validation) ship in the package:
+
+| File | Profile |
+|------|---------|
+| [`samples/profiles/pay.json`](samples/profiles/pay.json) | pay |
+| [`samples/profiles/doc.json`](samples/profiles/doc.json) | doc |
+| [`samples/profiles/principal.json`](samples/profiles/principal.json) | principal |
+| [`samples/profiles/composite.json`](samples/profiles/composite.json) | composite |
+| Guide | [`samples/profiles/README.md`](samples/profiles/README.md) |
+
+```bash
+npm install agent-witness-protocol
+node --input-type=module <<'EOF'
+import { readFileSync } from 'node:fs';
+import { validateWitnessRecord, validateProfile } from 'agent-witness-protocol';
+
+for (const name of ['pay', 'doc', 'principal', 'composite']) {
+  const rec = JSON.parse(
+    readFileSync(`node_modules/agent-witness-protocol/samples/profiles/${name}.json`, 'utf8')
+  );
+  const shape = validateWitnessRecord(rec);
+  const prof = shape.ok ? validateProfile(shape.record) : shape;
+  console.log(name, shape.ok && prof.ok ? 'OK' : prof);
+}
+EOF
+```
+
+| Goal | Use |
+|------|-----|
+| Full crypto offline verify (envelope + log + time) | `npx awp verify samples/receipt.json` (demo bundle; pay-shaped) |
+| Learn non-pay shapes | `samples/profiles/*.json` + `validateProfile` as above |
+| Production non-pay evidence | **Issuer** (PayBotFin witness / platform) must **emit** the right profile — ticket `TICKET-AWP-MULTI-PROFILE-EMIT-001` |
+
+No protocol redesign required for “documents and all agent actions.” Required work is **emission wiring** on the PayBot/witness side (and Core dogfood for every material action).
+
 ---
 
 ## What problem this solves

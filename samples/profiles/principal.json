@@ -1,0 +1,58 @@
+{
+  "profile": "principal",
+  "deployment": {
+    "log_id": "log:acme-eu-1",
+    "node_key_fpr": "SHA256:deploymentkeyfingerprint0001",
+    "software": { "name": "paybot", "version": "1.4.0" }
+  },
+  "intent": {
+    "agent": {
+      "agent_id": "agent:approval-bot",
+      "agent_key_fpr": "SHA256:agentkeyfpr0003",
+      "runtime_ref": "runtime:node22-prod"
+    },
+    "action": "order.place",
+    "target_ref": "order:abc123",
+    "params_hash": "4444444444444444444444444444444444444444444444444444444444444444",
+    "started_at": "2026-06-11T12:00:00Z",
+    "ended_at": "2026-06-11T12:00:03Z",
+    "policy": {
+      "policy_id": "policy:high-value-order-v2",
+      "policy_hash": "5555555555555555555555555555555555555555555555555555555555555555",
+      "decision": "allow"
+    }
+  },
+  "authorization": {
+    "principal_ref": "principal:opaque-777",
+    "credential": {
+      "type": "openid4vp",
+      "issuer": "did:web:wallet-issuer.example",
+      "assertion_hash": "6666666666666666666666666666666666666666666666666666666666666666",
+      "presentation_binding": {
+        "nonce": "verifier-nonce-3f8a",
+        "aud": "verifier:acme-eu-1",
+        "sd_hash": "7777777777777777777777777777777777777777777777777777777777777777",
+        "transaction_data_hashes": [
+          "8888888888888888888888888888888888888888888888888888888888888888"
+        ]
+      },
+      "trust_anchor": "trustlist:eu-lotl@2026-06-11T12:00:00Z",
+      "verified": true,
+      "assurance_echo": "eIDAS-substantial",
+      "verifier_policy_version": "vp:2026.6"
+    }
+  },
+  "verifications": [
+    {
+      "check": "openid4vp.kb_jwt.signature",
+      "subject_hash": "9999999999999999999999999999999999999999999999999999999999999999",
+      "issuer": "did:web:wallet-issuer.example",
+      "method": "trustlist-resolve",
+      "result": "pass",
+      "claim_class": "verified-against"
+    }
+  ],
+  "chain": {
+    "prev_record_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

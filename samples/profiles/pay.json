@@ -1,0 +1,55 @@
+{
+  "profile": "pay",
+  "deployment": {
+    "log_id": "log:acme-eu-1",
+    "node_key_fpr": "SHA256:abc123def456deploymentkeyfingerprint0001",
+    "software": { "name": "paybot", "version": "1.4.0" }
+  },
+  "intent": {
+    "agent": {
+      "agent_id": "agent:checkout-bot",
+      "agent_key_fpr": "SHA256:agentkeyfpr0001",
+      "runtime_ref": "runtime:node22-prod"
+    },
+    "action": "payment.refund",
+    "target_ref": "order:9f8e7d",
+    "params_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "started_at": "2026-06-11T10:00:00Z",
+    "ended_at": "2026-06-11T10:00:02Z",
+    "policy": {
+      "policy_id": "policy:refunds-v3",
+      "policy_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "decision": "allow"
+    }
+  },
+  "authorization": {
+    "principal_ref": "principal:opaque-001",
+    "credential": {
+      "type": "ap2-mandate",
+      "issuer": "did:web:issuer.example",
+      "assertion_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "status_check": {
+        "method": "token-status-list",
+        "result": "valid",
+        "checked_at": "2026-06-11T10:00:01Z"
+      },
+      "trust_anchor": "jwks:https://issuer.example/.well-known/jwks.json@2026-06-11T10:00:00Z",
+      "verified": true,
+      "assurance_echo": "eIDAS-high",
+      "verifier_policy_version": "vp:2026.6"
+    }
+  },
+  "verifications": [
+    {
+      "check": "ap2.checkout_mandate.sd_jwt_signature",
+      "subject_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "issuer": "did:web:issuer.example",
+      "method": "jwks-fetch",
+      "result": "pass",
+      "claim_class": "verified-against"
+    }
+  ],
+  "chain": {
+    "prev_record_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

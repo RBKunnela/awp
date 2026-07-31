@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- samples/profiles: pay · doc · principal · composite predicate examples + README (Chefe 1069)
+- docs: multi-profile user guide section; ticket TICKET-AWP-MULTI-PROFILE-EMIT-001
+
+
 All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),

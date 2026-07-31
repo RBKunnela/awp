@@ -1,7 +1,7 @@
 {
   "name": "agent-witness-protocol",
   "version": "0.2.0",
-  "description": "Open schema and verifier for the Agent Witness Protocol (AWP) — tamper-evident, customer-keyed, offline-verifiable witness records. Verify a receipt without trusting, or asking, the producer.",
+  "description": "Open schema and verifier for the Agent Witness Protocol (AWP) \u2014 tamper-evident, customer-keyed, offline-verifiable witness records. Verify a receipt without trusting, or asking, the producer.",
   "type": "module",
   "license": "Apache-2.0",
   "author": {
@@ -60,7 +60,7 @@
     "dist",
     "bin",
     "src/schema/witness-record.schema.json",
-    "samples/receipt.json",
+    "samples",
     "LICENSE",
     "NOTICE",
     "README.md",
