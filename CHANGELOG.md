@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.2.1 — 2026-07-31
+
+- **samples/receipts/** full offline-verifiable bundles for **pay · doc · principal · composite** (`npx awp verify samples/receipts/<profile>.json`)
+- `npm run gen:multi-profile-receipts` generator
+- docs: multi-profile user guide; packaging ADR; every-action ledger pointer
+- Chefe 1069 / 1072 / 1081
+
+
 - samples/receipts: full offline verify bundles for pay/doc/principal/composite (Chefe 1072)
 - tools/generate-multi-profile-receipts.mjs + npm run gen:multi-profile-receipts
 
