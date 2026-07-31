@@ -377,6 +377,10 @@ https://buymeacoffee.com/aiagentsprp
 
 ---
 
+## Packaging lock (Chefe 1057)
+
+**AWP open / PayBot private** — see [`docs/decisions/2026-07-31-ADR-AWP-OSS-PAYBOT-PRIVATE-1057.md`](docs/decisions/2026-07-31-ADR-AWP-OSS-PAYBOT-PRIVATE-1057.md).
+
 ## License
 
 - **Code:** [Apache-2.0](./LICENSE)  

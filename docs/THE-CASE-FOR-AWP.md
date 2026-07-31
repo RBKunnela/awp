@@ -67,7 +67,9 @@ None of these live in the envelope bytes. All survive any future format change. 
 
 Two independent roundtables (8 agents, **unanimous, zero dissent**) decided: **keep the DSSE/in-toto envelope; do not pivot to SCITT's COSE_Sign1.** Reasons: a pivot is architecturally incoherent (a "chimera" breaking in-toto verifier compatibility — the value is in the *predicate payload*, not the envelope), costs 15-25 dev-days rewriting 368 tests on a pre-RFC moving target, and adds zero product value. DSSE also wins native multi-signature (human + agent co-signing) and stays hand-auditable (JSON, not CBOR). **SCITT becomes relevant only if a real customer demands it — then it's a small additive export adapter (~3-5 days), not a rebuild.** Captured as a spec §9 migration gate + trigger; nothing to build now. (Competitor VCP made the same composition call and also avoided COSE — using RFC 6962 — signal the market hasn't converged on SCITT-COSE.)
 
-## 7. The open / paid split (why publishing helps, not cannibalizes)
+## 7. The open / paid split
+> **LOCKED Chefe 1057:** see `docs/decisions/2026-07-31-ADR-AWP-OSS-PAYBOT-PRIVATE-1057.md` (AWP OSS / PayBot private).
+ (why publishing helps, not cannibalizes)
 
 - **Open (Apache-2.0):** the `WitnessRecord` schema + the `awp verify` reference verifier + SDK. Generic name `agent-witness-protocol`; neutral namespace `https://awp.dev/witness-record/v1`. CC-BY-4.0 on the spec document (authorship: Renata Baldissara-Kunnela).
 - **Paid (proprietary):** the production engine + the **operated neutral witness service** (PayBotFin) that issues receipts at scale, multi-tenant, with metering/billing and hosted assurance.
