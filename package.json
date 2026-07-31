@@ -76,7 +76,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "regen:fixtures": "node test/regenerate-signed-fixtures.mjs"
+    "regen:fixtures": "node test/regenerate-signed-fixtures.mjs",
+    "gen:multi-profile-receipts": "npm run build && node tools/generate-multi-profile-receipts.mjs"
   },
   "dependencies": {
     "zod": "^3.23.8"

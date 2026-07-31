@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- samples/receipts: full offline verify bundles for pay/doc/principal/composite (Chefe 1072)
+- tools/generate-multi-profile-receipts.mjs + npm run gen:multi-profile-receipts
+
 - samples/profiles: pay · doc · principal · composite predicate examples + README (Chefe 1069)
 - docs: multi-profile user guide section; ticket TICKET-AWP-MULTI-PROFILE-EMIT-001
 

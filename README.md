@@ -233,7 +233,19 @@ One schema; four **profiles** (constraint sets). The `intent.action` verb can be
 | **principal** | A verified human stands behind *this* action | Credential **bound to this intent** (not just a session) |
 | **composite** | E-commerce scene (pay + doc + human) | Union of pay + doc minimums |
 
-**Shape/profile samples** (predicates, for learning + library validation) ship in the package:
+**Full crypto receipts** (offline `awp verify` → PASS for every profile) — Chefe **1072**:
+
+| File | Profile | Command |
+|------|---------|---------|
+| [`samples/receipts/pay.json`](samples/receipts/pay.json) | pay | `npx awp verify samples/receipts/pay.json` |
+| [`samples/receipts/doc.json`](samples/receipts/doc.json) | doc | `npx awp verify samples/receipts/doc.json` |
+| [`samples/receipts/principal.json`](samples/receipts/principal.json) | principal | `npx awp verify samples/receipts/principal.json` |
+| [`samples/receipts/composite.json`](samples/receipts/composite.json) | composite | `npx awp verify samples/receipts/composite.json` |
+| [`samples/receipt.json`](samples/receipt.json) | pay (walkthrough alias) | `npx awp verify samples/receipt.json` |
+
+Generator: `npm run gen:multi-profile-receipts` · Hosted multi-profile POST: paybotfin-witness (tenant `allowed_profiles`).
+
+**Shape/profile samples** (predicates only — library `validateProfile`, not full crypto) also ship:
 
 | File | Profile |
 |------|---------|
@@ -262,11 +274,11 @@ EOF
 
 | Goal | Use |
 |------|-----|
-| Full crypto offline verify (envelope + log + time) | `npx awp verify samples/receipt.json` (demo bundle; pay-shaped) |
-| Learn non-pay shapes | `samples/profiles/*.json` + `validateProfile` as above |
-| Production non-pay evidence | **Issuer** (PayBotFin witness / platform) must **emit** the right profile — ticket `TICKET-AWP-MULTI-PROFILE-EMIT-001` |
+| Full crypto offline verify (all profiles) | `npx awp verify samples/receipts/<profile>.json` |
+| Learn non-pay shapes (predicate only) | `samples/profiles/*.json` + `validateProfile` as above |
+| Hosted issuance multi-profile | paybotfin-witness: set tenant `allowed_profiles` to include `doc`/`principal`/`composite`; POST full records |
 
-No protocol redesign required for “documents and all agent actions.” Required work is **emission wiring** on the PayBot/witness side (and Core dogfood for every material action).
+No protocol redesign required. **Gap closed (1072):** full verify samples for all 4 profiles + witness allow-list honors `record.profile`. Remaining: paybot-core auto-emit of full WitnessRecords for every event class (see mapping doc).
 
 ---
 

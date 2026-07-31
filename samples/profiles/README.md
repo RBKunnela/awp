@@ -50,3 +50,8 @@ JS
 ```
 
 Full signed multi-profile **receipt bundles** for `awp verify` ship as the issuer path matures (see ticket `TICKET-AWP-MULTI-PROFILE-EMIT-001`). Until then use `samples/receipt.json` for end-to-end crypto verify (pay-shaped demo).
+
+
+## Full crypto verify (all profiles)
+
+See sibling dir [`../receipts/`](../receipts/) — `npx awp verify samples/receipts/doc.json` etc. (Chefe 1072).
