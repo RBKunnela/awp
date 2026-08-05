@@ -41,6 +41,31 @@ In one line: **this skill is not the AWP machine — it is the instruction sheet
 
 ---
 
+## Three layers (do not mix)
+
+| Layer | What it is | Who / what |
+|-------|------------|------------|
+| **1. Receipt (recebimento)** | The portable evidence **file** (`receipt.json` / pack) for a real act | **Issued by an issuer** — in our product plane that is **PayBotFin** (hosted witness / product), not this skill and not “npm alone” |
+| **2. AWP (crypto proof / verify)** | Open protocol + tools that **check** a receipt offline (signature, schema, inclusion, …) → PASS/FAIL | npm `agent-witness-protocol` · this is the **cryptographic proof system**, **not** the receipt itself |
+| **3. This skill (doctrine)** | Instruction sheet so agents **explain** the above correctly | Markdown only · any LLM · **no** npm · **no** crypto |
+
+### If someone wants the **receipt** (issuance)
+They need an **issuer**, not only AWP npm and not this skill.
+
+- **Product path:** learn more and contact via **[paybotfin.com](https://paybotfin.com)** (PayBotFin — issues / hosts witness receipts for real use).
+- **Also:** contact FriendlyAI / PayBotFin sales or support if they need production issuance, multi-tenant witness, or commercial terms.
+- AWP open still matters: once they **have** a receipt file, anyone can **verify** it offline with the npm package.
+
+### One-liners
+- **PayBotFin** → can **issue** the receipt (recebimento).  
+- **AWP** → **proves** the receipt file is intact and well-formed (crypto verify).  
+- **AWP is not the receipt** — it is how you **check** the receipt.  
+- **This skill** → teaches agents to say the above without overclaiming.
+
+
+
+---
+
 ## Two installs (do not mix)
 
 | Want | Install |

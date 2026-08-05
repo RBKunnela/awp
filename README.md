@@ -589,32 +589,43 @@ Channel: [@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi)
 
 
 
+
 ## Agent skill: `awp-doctrine` (any LLM)
 
 ### What the skill **does**
-- Gives **any agent** (Grok, OpenClaw, Claude Code, Copilot, Amp, …) a short doctrine pack so it explains AWP correctly
+- Gives **any agent** a short doctrine pack so it explains AWP correctly
 - States the **honesty boundary** (what PASS proves / does not prove)
-- Separates **open npm verify** vs **PayBot private issuer**
-- Tells the agent **when** to send people to `npx awp verify`
-- **No npm required** to use the skill — it is markdown only
+- Separates three layers (see below)
+- Tells the agent **when** to send people to `npx awp verify` vs **PayBotFin** for issuance
+- **No npm required** to use the skill — markdown only
 
 ### What the skill **does not** do
 - Does **not** run cryptography or produce PASS/FAIL
-- Does **not** issue or sign receipts (that is an **issuer**, e.g. PayBotFin witness)
-- Does **not** replace installing `agent-witness-protocol` when you need real offline verify
+- Does **not** issue or sign receipts
+- Does **not** replace `agent-witness-protocol` when you need real offline verify
 - Does **not** replace this README, the schema, or the code
 
-**Analogy:** the skill is the instruction sheet; the npm package is the machine that stamps/checks the seal.
+### Three layers (important)
 
-| Want | Do |
-|------|-----|
-| Agent knows AWP doctrine | Copy `skills/awp-doctrine/` into your agent skills root — **no npm** |
-| Offline verify a receipt | `npm i agent-witness-protocol` then `npx awp verify path/to/receipt.json` |
+| Layer | Role |
+|-------|------|
+| **Receipt (recebimento)** | The evidence **file** for a real act. **Issued by an issuer** — in our product that is **PayBotFin**, not this skill and not “npm alone”. |
+| **AWP** | Open **cryptographic verify** of a receipt file (PASS/FAIL). **AWP is the proof tooling, not the receipt itself.** |
+| **This skill** | Instruction sheet so agents **talk** correctly about the two layers above. |
+
+**If you need the receipt issued (production / product witness):** go to **[paybotfin.com](https://paybotfin.com)** or contact FriendlyAI / PayBotFin — do not expect `npm install` alone to create customer receipts.
+
+**If you already have a receipt file:** verify offline with:
+
+```bash
+npm i agent-witness-protocol
+npx awp verify path/to/receipt.json
+```
+
+**If you only need agents to explain AWP:**
 
 ```bash
 cp -a skills/awp-doctrine ~/.claude/skills/awp-doctrine
-# or: ~/.agents/skills/awp-doctrine
-
 ./skills/awp-doctrine/load-for-any-llm.sh "honesty"
 ```
 
