@@ -586,6 +586,30 @@ Channel: [@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi)
 
 ---
 
+
+
+## Agent skill: `awp-doctrine` (any LLM)
+
+**Doctrine for agents — not the cryptographic verifier.**
+
+Agents (Grok, OpenClaw, Claude Code, Copilot CLI, Amp, …) can load this skill so they **explain AWP correctly**: what PASS proves, open npm vs PayBot private, when to run verify.
+
+| Want | Do |
+|------|-----|
+| Agent knows AWP doctrine | Copy `skills/awp-doctrine/` into your agent skills root — **no npm required** |
+| Offline verify a receipt | `npm i agent-witness-protocol` then `npx awp verify path/to/receipt.json` |
+
+```bash
+# install skill for common hosts
+cp -a skills/awp-doctrine ~/.claude/skills/awp-doctrine
+# or: ~/.agents/skills/awp-doctrine
+
+# inject into any model prompt:
+./skills/awp-doctrine/load-for-any-llm.sh "honesty"
+```
+
+Path in this repo: [`skills/awp-doctrine/`](./skills/awp-doctrine/)
+
 ## Support
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support%20AWP-ffdd00.svg?logo=buymeacoffee&logoColor=black&style=for-the-badge)](https://buymeacoffee.com/aiagentsprp)
