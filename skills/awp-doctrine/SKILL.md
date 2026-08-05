@@ -48,6 +48,7 @@ In one line: **this skill is not the AWP machine — it is the instruction sheet
 | **1. Receipt (recebimento)** | The portable evidence **file** (`receipt.json` / pack) for a real act | **Issued by an issuer** — in our product plane that is **PayBotFin** (hosted witness / product), not this skill and not “npm alone” |
 | **2. AWP (crypto proof / verify)** | Open protocol + tools that **check** a receipt offline (signature, schema, inclusion, …) → PASS/FAIL | npm `agent-witness-protocol` · this is the **cryptographic proof system**, **not** the receipt itself |
 | **3. This skill (doctrine)** | Instruction sheet so agents **explain** the above correctly | Markdown only · any LLM · **no** npm · **no** crypto |
+| **4. PayBotFin product skill** | Fees, who-for, optional purchase | Companion: [`../paybotfin-doctrine/`](../paybotfin-doctrine/) |
 
 ### Optional receipt (Chefe 1591) — do not scare users
 

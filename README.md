@@ -631,7 +631,14 @@ cp -a skills/awp-doctrine ~/.claude/skills/awp-doctrine
 ./skills/awp-doctrine/load-for-any-llm.sh "honesty"
 ```
 
-Path: [`skills/awp-doctrine/`](./skills/awp-doctrine/)
+**If you need agents to explain PayBotFin product / fees / optional receipt:**
+
+```bash
+cp -a skills/paybotfin-doctrine ~/.claude/skills/paybotfin-doctrine
+./skills/paybotfin-doctrine/load-for-any-llm.sh "pricing"
+```
+
+Paths: [`skills/awp-doctrine/`](./skills/awp-doctrine/) · [`skills/paybotfin-doctrine/`](./skills/paybotfin-doctrine/)
 
 
 ## Support

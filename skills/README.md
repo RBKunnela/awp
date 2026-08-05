@@ -1,5 +1,28 @@
 # AWP agent skills
 
+## `paybotfin-doctrine`
+
+### Does
+- Product doctrine: **what PayBotFin is**, **who for**, **public pricing**, **optional vs receipt**
+- Teaches machines: **not compulsory** for AWP; **required only if user needs issued receipt**
+- Explains **what a receipt is** and **why** someone would need one
+- Public list (Chefe 3779 / paybotfin.com): Free €0 · Pro **€11/bot/mo + 1.5%** · Enterprise custom
+
+### Does not
+- Bill users or issue receipts itself
+- Replace open AWP verify (that stays free)
+- Invent Enterprise rates
+
+| Want | Where |
+|------|--------|
+| Product / fees / “do I need PayBotFin?” | This skill folder |
+| Crypto honesty / npm verify | `awp-doctrine` |
+| Buy / pilot | [paybotfin.com](https://paybotfin.com) |
+
+See [`paybotfin-doctrine/SKILL.md`](./paybotfin-doctrine/SKILL.md).
+
+---
+
 ## `awp-doctrine`
 
 ### Does
