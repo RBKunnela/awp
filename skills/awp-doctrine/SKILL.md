@@ -1,29 +1,70 @@
 ---
 name: awp-doctrine
-description: "Knowledge base from AWP (Agent Witness Protocol) open docs + packaging ADR. Use when verifying agent receipts, explaining what AWP proves vs does not prove, integrating paybot-sdk/mcp with offline verify, or packaging open AWP vs private PayBot."
+description: "Doctrine skill for agents about AWP (Agent Witness Protocol). Explains what AWP proves, open npm vs PayBot private, when to verify. Does NOT run crypto or issue receipts. Use when answering AWP questions; use npm agent-witness-protocol when verifying a receipt file."
 ---
 
-## What this skill is (and is not)
-
-| This skill (doctrine) | AWP npm (`agent-witness-protocol`) |
-|----------------------|-------------------------------------|
-| Markdown for **agents** to answer correctly | Cryptographic **verify** tool |
-| No crypto, no PASS/FAIL | Needs install + a `receipt.json` |
-| Explains honesty boundary & packaging | Runs `npx awp verify` |
-
-**Any LLM host** can load these files. Claude not required.
-
 # Agent Witness Protocol (AWP) — doctrine skill
-**Sources**: AWP README + ADR-AWP-OSS-PAYBOT-PRIVATE (Chefe 1057)  
-**Generated**: 2026-08-05 | **Method**: book-to-skill extract + structured skill (host-agnostic)  
-**Tokens**: load SKILL.md first; open chapter files only when needed
+
+**Sources**: AWP README + ADR packaging Chefe 1057  
+**Generated**: 2026-08-05 · **host-agnostic** (any LLM)
+
+---
+
+## What this skill DOES
+
+| Does | Meaning |
+|------|---------|
+| **Teaches agents the house doctrine** | Correct answers about AWP without re-reading the full README |
+| **States the honesty boundary** | What PASS proves vs what it does **not** prove |
+| **Separates layers** | Skill (talk) vs npm verify (crypto) vs PayBot issuer (produce receipts) |
+| **Points to the right next step** | When to say “install npm and verify this file” |
+| **Works on any LLM host** | Markdown files injected into the prompt — Claude not required |
+| **Saves tokens** | Load SKILL.md first; open a chapter only if needed |
+
+In one line: **this skill makes agents explain AWP correctly.**
+
+---
+
+## What this skill does NOT do
+
+| Does **not** | Meaning |
+|--------------|---------|
+| **Does not verify receipts** | No PASS/FAIL cryptographic check |
+| **Does not replace npm** | Real verify = `agent-witness-protocol` + a receipt file |
+| **Does not issue / sign receipts** | That is the **issuer** (e.g. PayBotFin witness), not this skill |
+| **Does not replace PayBot** | PayBot is product/issuer plane; AWP open is verify plane |
+| **Does not train model weights** | Runtime doctrine only, not fine-tuning |
+| **Does not invent evidence** | If there is no `receipt.json`, there is nothing to verify |
+| **Does not replace full docs** | README, schema, tests, videos remain SoT for implementers |
+
+In one line: **this skill is not the AWP machine — it is the instruction sheet for the machine.**
+
+---
+
+## Two installs (do not mix)
+
+| Want | Install |
+|------|---------|
+| Agent knows how to **talk** about AWP | This skill folder only — **no npm** |
+| Human/agent **runs** offline verify | `npm i agent-witness-protocol` + `npx awp verify receipt.json` |
+
+```bash
+# Doctrine only (this skill)
+cp -a skills/awp-doctrine ~/.claude/skills/awp-doctrine   # or ~/.agents/skills/
+./skills/awp-doctrine/load-for-any-llm.sh "honesty"
+
+# Crypto verify (separate)
+npm i agent-witness-protocol
+npx awp verify path/to/receipt.json
+```
+
+---
 
 ## How to use (any LLM / any host)
 
-This is **not Claude-only**. Any agent that can read files:
-1. Load this `SKILL.md` for core rules
-2. If the question needs depth, `Read` the linked chapter file
-3. Answer from the skill — do not invent verify steps
+1. Load this `SKILL.md` for core rules  
+2. If depth needed, Read the linked chapter  
+3. Answer from the skill — do not invent verify steps  
 
 ```
 Ask: "What does AWP prove?"
@@ -32,12 +73,14 @@ Ask: "AWP vs PayBot private?"
 Ask: "ch02" or "honesty boundary"
 ```
 
+---
+
 ## Core frameworks & decision rules
 
 ### 1) AWP is verify, not invent
 - **Use AWP when** you have a `receipt.json` (or pack) from an issuer and need offline PASS/FAIL.
 - **Do not use AWP alone when** you only have a bank screen / chat log — that is not a receipt body.
-- Install = verify. Issuer (PayBotFin witness / platform) = produces the body.
+- Install npm = verify. Issuer (PayBotFin witness / platform) = produces the body.
 
 ### 2) Honesty boundary (what PASS means)
 | Proves | Does **not** prove |
@@ -54,9 +97,9 @@ Ask: "ch02" or "honesty boundary"
 - **Do not** conflate “npm install AWP” with “production witness of the world.”
 
 ### 4) Multi-profile
-Receipts are not only payments: profiles include `pay`, `doc`, `principal`, `composite` (see chapter files / README).
+Receipts are not only payments: profiles include `pay`, `doc`, `principal`, `composite`.
 
-### 5) Offline verify loop
+### 5) Offline verify loop (when they need the real thing)
 ```bash
 npm install agent-witness-protocol
 npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
@@ -66,8 +109,10 @@ npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
 
 ### 6) With PayBot family
 - **paybot-mcp / paybot-sdk**: agent payment / authorize flows (may attach witness).
-- **This skill + awp CLI**: verify evidence offline after issuance.
+- **npm AWP**: verify evidence offline after issuance.
 - Payment success ≠ AWP PASS until platform wires witness receipts.
+
+---
 
 ## Chapter index
 
@@ -93,9 +138,8 @@ npx awp verify node_modules/agent-witness-protocol/samples/receipt.json
 - [cheatsheet.md](cheatsheet.md)
 
 ## Scope & limits
-Covers AWP open doctrine + packaging ADR from house sources only. Not a substitute for live witness API docs or legal advice. For live issuer URLs: witness.paybotfin.com · awp.paybotfin.com schema.
+Covers AWP open doctrine + packaging ADR from house sources only. Not a substitute for live witness API docs or legal advice. For live issuer: witness.paybotfin.com · schema: awp.paybotfin.com.
 
-## Smoke provenance
-- Extractor: `book-to-skill` (fork RBKunnela/book-to-skill) `scripts/extract.py`
-- Workdir: `/tmp/book_skill_work_awp/`
-- Host: **any LLM** — skill is markdown files
+## Provenance
+- Extractor: book-to-skill (fork RBKunnela/book-to-skill)
+- Skill path in AWP repo: `skills/awp-doctrine/`

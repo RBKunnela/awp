@@ -588,27 +588,38 @@ Channel: [@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi)
 
 
 
+
 ## Agent skill: `awp-doctrine` (any LLM)
 
-**Doctrine for agents — not the cryptographic verifier.**
+### What the skill **does**
+- Gives **any agent** (Grok, OpenClaw, Claude Code, Copilot, Amp, …) a short doctrine pack so it explains AWP correctly
+- States the **honesty boundary** (what PASS proves / does not prove)
+- Separates **open npm verify** vs **PayBot private issuer**
+- Tells the agent **when** to send people to `npx awp verify`
+- **No npm required** to use the skill — it is markdown only
 
-Agents (Grok, OpenClaw, Claude Code, Copilot CLI, Amp, …) can load this skill so they **explain AWP correctly**: what PASS proves, open npm vs PayBot private, when to run verify.
+### What the skill **does not** do
+- Does **not** run cryptography or produce PASS/FAIL
+- Does **not** issue or sign receipts (that is an **issuer**, e.g. PayBotFin witness)
+- Does **not** replace installing `agent-witness-protocol` when you need real offline verify
+- Does **not** replace this README, the schema, or the code
+
+**Analogy:** the skill is the instruction sheet; the npm package is the machine that stamps/checks the seal.
 
 | Want | Do |
 |------|-----|
-| Agent knows AWP doctrine | Copy `skills/awp-doctrine/` into your agent skills root — **no npm required** |
+| Agent knows AWP doctrine | Copy `skills/awp-doctrine/` into your agent skills root — **no npm** |
 | Offline verify a receipt | `npm i agent-witness-protocol` then `npx awp verify path/to/receipt.json` |
 
 ```bash
-# install skill for common hosts
 cp -a skills/awp-doctrine ~/.claude/skills/awp-doctrine
 # or: ~/.agents/skills/awp-doctrine
 
-# inject into any model prompt:
 ./skills/awp-doctrine/load-for-any-llm.sh "honesty"
 ```
 
-Path in this repo: [`skills/awp-doctrine/`](./skills/awp-doctrine/)
+Path: [`skills/awp-doctrine/`](./skills/awp-doctrine/)
+
 
 ## Support
 

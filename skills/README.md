@@ -1,7 +1,20 @@
 # AWP agent skills
 
-| Skill | Purpose | Needs npm? |
-|-------|---------|------------|
-| [`awp-doctrine`](./awp-doctrine/) | Doctrine for agents (honesty boundary, packaging, when to verify) | **No** |
+## `awp-doctrine`
 
-The **verifier** remains the npm package at the repo root (`agent-witness-protocol`). Install npm only when you need `awp verify` on a receipt file.
+### Does
+- Doctrine for agents: what AWP is, honesty boundary, packaging, when to verify
+- Works with **any LLM** host that can read markdown skills
+- **No npm** required for the skill itself
+
+### Does not
+- Cryptographic verify / PASS-FAIL
+- Issue or sign receipts
+- Replace the npm package or the rest of this repository
+
+| Want | Install |
+|------|---------|
+| Agents explain AWP correctly | This folder → agent skills root |
+| Run offline verify | `npm i agent-witness-protocol` at repo root |
+
+See [`awp-doctrine/SKILL.md`](./awp-doctrine/SKILL.md).
