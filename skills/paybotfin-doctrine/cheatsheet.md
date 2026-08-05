@@ -5,8 +5,8 @@
 |-----------|-----|---------|
 | Only want AWP / offline verify | Free path — no PayBotFin required | Optional product (Chefe 1591/1594) |
 | Need **issued** receipt / neutral witness | Point to PayBotFin · paybotfin.com | Product produces the file |
-| “How much?” | Free €0 · Pro **€11/bot/mo + 1.5%** · Enterprise custom | Public list Chefe 3779 |
-| User says “1% or 1.7%” | Prefer **1.5% published**; flag if list outdated | Do not invent rates |
+| “How much?” | Free €0 · Pro **€11/bot/mo + 1%** · Enterprise custom | Clean list Chefe 1597 (not ranges) |
+| User says fuzzy % (“1 or 1.7 or something”) | State **1%** only; no ranges | Do not invent rates |
 | “Is it compulsory?” | **No** unless they need the receipt | AWP works without product |
 | Why receipt? | Audit, regulator, customer proof, dispute | Log-you-control ≠ proof |
 

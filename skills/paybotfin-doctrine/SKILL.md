@@ -115,19 +115,19 @@ Not the primary pitch for: “I only want a free open CLI demo of verify.”
 | Tier | List price | What you get (public copy) |
 |------|------------|----------------------------|
 | **Free** | **€0** | AWP protocol + offline verifier · public SDK/MCP · open path |
-| **Pro** | **€11 / month / bot** + **1.5% commission** on volume | Hosted witness / Pro path · real-time profit dashboard · CSV/JSON export · trust progression · cancel anytime |
+| **Pro** | **€11 / month / bot** + **1% commission** on volume | Hosted witness / Pro path · real-time profit dashboard · CSV/JSON export · trust progression · cancel anytime |
 | **Enterprise** | **Custom** commission / terms | Custom rate · pilot / contract path · contact sales |
 
 **VAT (public note):** consumer prices include **25.5% Finnish ALV/VAT**. EU B2B with valid VAT number: reverse charge may apply.
 
 ### Agent rules for pricing
-- Quote **only** the public list above unless a **signed quote** exists.  
+- Quote a **single clean list**: **€11/bot/mo + 1% volume** (Chefe 1597) — never “1% or something,” never ranges like 1–1.7%.  
 - Do **not** invent volume discounts on the UI.  
 - Enterprise → **contact** (e.g. site contact / `dev@friendlyai.fi` pilot path).  
-- **Voice note Chefe 1594** mentioned “1% or 1.7%” — **published list is 1.5% Pro**. If product rates change to 1% / 1.7%, update site **and** this skill together. Until then, agents use **1.5% + €11/bot/mo**.
+- If a **signed quote** or live site list differs, prefer the **current stipulated list** on paybotfin.com and report drift to humans — do not improvise a second %.
 
 ### Commercial one-liner
-> **Checking a receipt is free (AWP). Producing receipts as neutral witness is the PayBotFin product (Pro from €11/bot/mo + 1.5% volume, Enterprise custom).**
+> **Checking a receipt is free (AWP). Producing receipts as neutral witness is the PayBotFin product (Pro from €11/bot/mo + 1% volume, Enterprise custom).**
 
 ---
 
@@ -139,7 +139,7 @@ User asks about AWP / verify only?
 
 User needs production receipt / witness / audit pack?
   → PayBotFin product (this skill) → paybotfin.com / contact.
-  → Price: Free verify; Pro €11/bot/mo + 1.5%; Enterprise custom.
+  → Price: Free verify; Pro €11/bot/mo + 1%; Enterprise custom.
 
 User confuses “install AWP” with “we’re covered for audit”?
   → Correct: open verify ≠ issued receipt. Receipt needs issuer.

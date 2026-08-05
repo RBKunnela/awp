@@ -6,7 +6,7 @@
 - Product doctrine: **what PayBotFin is**, **who for**, **public pricing**, **optional vs receipt**
 - Teaches machines: **not compulsory** for AWP; **required only if user needs issued receipt**
 - Explains **what a receipt is** and **why** someone would need one
-- Public list (Chefe 3779 / paybotfin.com): Free €0 · Pro **€11/bot/mo + 1.5%** · Enterprise custom
+- List (Chefe 1597): Free €0 · Pro **€11/bot/mo + 1%** · Enterprise custom — single figure, no ranges
 
 ### Does not
 - Bill users or issue receipts itself
