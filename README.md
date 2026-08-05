@@ -609,9 +609,11 @@ Channel: [@FriendlyAI_fi](https://www.youtube.com/@FriendlyAI_fi)
 
 | Layer | Role |
 |-------|------|
-| **Receipt (recebimento)** | The evidence **file** for a real act. **Issued by an issuer** — in our product that is **PayBotFin**, not this skill and not “npm alone”. |
+| **Receipt (recebimento)** | The evidence **file** for a real act. **Issued by an issuer** — in our product that is **PayBotFin**, not this skill and not “npm alone”. **Optional** — only when you need portable proof. |
 | **AWP** | Open **cryptographic verify** of a receipt file (PASS/FAIL). **AWP is the proof tooling, not the receipt itself.** |
 | **This skill** | Instruction sheet so agents **talk** correctly about the two layers above. |
+
+**Optional receipt (Chefe 1591):** if you **do not** need a real issued receipt, **you do not need PayBotFin** — open AWP, samples, and this skill **work without** contracting the product. If you **do** need a production receipt (audit pack, customer proof, offline re-check of a real act), you **also need PayBotFin** (or another AWP-compliant issuer) to **obtain** it — then verify with open AWP for free.
 
 **If you need the receipt issued (production / product witness):** go to **[paybotfin.com](https://paybotfin.com)** or contact FriendlyAI / PayBotFin — do not expect `npm install` alone to create customer receipts.
 

@@ -3,6 +3,8 @@
 ## Decision rules
 | Situation | Do | Because |
 |-----------|-----|---------|
+| User does **not** need a receipt | Do **not** require PayBotFin | Optional path — open AWP / skill / pay-control still work (Chefe 1591) |
+| User **needs** a real receipt | Point to PayBotFin / paybotfin.com (or AWP issuer) | Product **issues** the file; AWP only verifies |
 | Have receipt.json | `npx awp verify` | Only path that proves integrity-since-witness |
 | Only payment UI green | Do not claim AWP PASS | Different check |
 | User asks “is AWP free?” | Open verify yes; hosted issuer may be product | Packaging lock 1057 |
